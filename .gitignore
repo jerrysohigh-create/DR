@@ -1,0 +1,24 @@
+# Local data room working directory - NEVER commit to public repo
+DR-INBOX/
+
+# Environment files & secrets
+*.env
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+
+# Logs and temp
+*.log
+*.bak
+*.tmp
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
