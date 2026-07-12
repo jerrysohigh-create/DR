@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB3 基礎設施 — MAGNE.AI DD</title>
+  <link rel="stylesheet" href="../assets/dr.css">
+</head>
+<body>
+  <header class="dr-nav">
+    <div class="nav-container">
+      <div class="nav-brand">MAGNE.AI DD</div>
+      <ul class="nav-links">
+        <li><a href="index.html">總覽</a></li>
+        <li><a href="web2-foundation.html">WEB2 基礎能力</a></li>
+        <li><a href="web3-infrastructure.html">WEB3 基礎設施</a></li>
+        <li><a href="compliance-risk.html">合規與風險</a></li>
+        <li><a href="documents.html">文件索引</a></li>
+        <li><a href="../web3-infrastructure.html" style="margin-left: 0.5rem; color: var(--text-tertiary);">EN</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>WEB3 基礎設施</h1>
+      <p class="subtitle">MHA 代幣 · Tokenomics · L1 / L2 網絡 · 智能合約 · 審計狀態 · 活動場次</p>
+      <p class="meta">最後更新：<span id="last-updated"></span></p>
+    </section>
+
+    <div class="disclaimer">
+      <strong>重要：</strong> MS2 ≠ MHA，兩者之間不存在固定兌換比例。代幣經濟、分配時程及上市相關資訊以最終交易所、法律及合規審查為準。
+    </div>
+
+    <section class="section">
+      <h2>MHA 代幣概覽</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">代幣名稱</div>
+          <div class="card-value">MHA</div>
+          <div class="card-sub">MAGNE.AI 核心代幣</div>
+        </div>
+        <div class="card">
+          <div class="card-label">總供應量</div>
+          <div class="card-value">10,000,000,000</div>
+          <div class="card-sub">100 億 MHA</div>
+        </div>
+        <div class="card">
+          <div class="card-label">初始網絡</div>
+          <div class="card-value">BSC</div>
+          <div class="card-sub">BNB Smart Chain (BEP-20)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">路線圖</div>
+          <div class="card-value">L1 / L2</div>
+          <div class="card-sub">規劃多鏈擴展</div>
+        </div>
+      </div>
+      <h3>用途框架</h3>
+      <p>MHA 在 MAGNE.AI 生態中分為六個功能角色：</p>
+      <ul>
+        <li><strong>設備：</strong> Phone Gen1 硬體參與獎勵</li>
+        <li><strong>AI Agent：</strong> AI Agent 經濟結算與激勵</li>
+        <li><strong>網絡：</strong> MAGNE.AI 網絡治理與價值傳遞</li>
+        <li><strong>質押：</strong> 質押獎勵與合資格性認證</li>
+        <li><strong>生態：</strong> 生態夥伴、流動性激勵、Builder 計畫</li>
+        <li><strong>未來擴展：</strong> 跨鏈橋接與 Layer 2 結算</li>
+      </ul>
+      <p><strong>合資格分配池：</strong> 35,000,000 MHA 分配給符合資格的 MS2 質押者，依有效質押權重計算。</p>
+    </section>
+
+    <section class="section">
+      <h2>Tokenomics（分配）</h2>
+      <table class="dr-table">
+        <thead>
+          <tr><th>類別</th><th>分配</th><th>數量（MHA）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>挖礦</td><td>30%</td><td>3,000,000,000</td></tr>
+          <tr><td>質押</td><td>15%</td><td>1,500,000,000</td></tr>
+          <tr><td>生態 / DAO</td><td>15%</td><td>1,500,000,000</td></tr>
+          <tr><td>團隊</td><td>10%</td><td>1,000,000,000</td></tr>
+          <tr><td>VC</td><td>10%</td><td>1,000,000,000</td></tr>
+          <tr><td>早期支持者</td><td>8%</td><td>800,000,000</td></tr>
+          <tr><td>MM（做市）</td><td>7%</td><td>700,000,000</td></tr>
+          <tr><td>公開</td><td>3%</td><td>300,000,000</td></tr>
+          <tr><td>Agents</td><td>1%</td><td>100,000,000</td></tr>
+          <tr><td>交易所</td><td>1%</td><td>100,000,000</td></tr>
+          <tr style="font-weight: bold; background: var(--bg-tertiary);"><td>合計</td><td>100%</td><td>10,000,000,000</td></tr>
+        </tbody>
+      </table>
+      <div class="disclaimer">
+        <strong>註：</strong> 解鎖及流通時程以法律、合規及交易所審查為準。團隊、VC、早期支持者等類別可能受歸屬（vesting）及 cliffs 條件約束。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>L1 / L2 網絡架構</h2>
+      <table class="dr-table">
+        <thead>
+          <tr><th>層</th><th>類型</th><th>ChainID</th><th>RPC</th><th>瀏覽器</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>L1</td>
+            <td>Testnet</td>
+            <td>20250810</td>
+            <td><code>https://rpc.testnet.magicalhash.com</code></td>
+            <td><a href="https://explorer.testnet.magicalhash.com" target="_blank" rel="noopener">瀏覽器</a></td>
+          </tr>
+          <tr>
+            <td>L2（OP Stack）</td>
+            <td>Testnet</td>
+            <td>20250827</td>
+            <td><code>https://l2-rpc.testnet.magicalhash.com</code></td>
+            <td><a href="https://l2-explorer.testnet.magicalhash.com" target="_blank" rel="noopener">瀏覽器</a></td>
+          </tr>
+          <tr>
+            <td>主網</td>
+            <td>Production</td>
+            <td><span class="badge badge-tbc">待確認</span></td>
+            <td>目標 Q1 2026（以官方公告為準）</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>從 BSC（初始部署）到 L1 與 L2 的跨鏈映射已規劃。測試網數據不應作為正式經濟活動依據。</p>
+    </section>
+
+    <section class="section">
+      <h2>智能合約</h2>
+      <table class="dr-table">
+        <thead>
+          <tr><th>合約</th><th>地址</th><th>狀態</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Season 2 抽獎（Proxy）</td>
+            <td><code>0x6DE61D8438176741fc8150Aef53256830a6Dd635</code></td>
+            <td><a href="https://bscscan.com/address/0x6DE61D8438176741fc8150Aef53256830a6Dd635" target="_blank" rel="noopener">BscScan</a></td>
+          </tr>
+          <tr>
+            <td>MS2 質押（Proxy）</td>
+            <td><code>0xB6Ed72808fb34a3Ac118D397f49332abBAA484D8</code></td>
+            <td><a href="https://bscscan.com/address/0xB6Ed72808fb34a3Ac118D397f49332abBAA484D8" target="_blank" rel="noopener">BscScan</a></td>
+          </tr>
+          <tr>
+            <td>MS2 代幣</td>
+            <td><span class="badge badge-tbc">待確認 / 公開 Dashboard 可見</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>MagneLotteryS2 實作合約</td>
+            <td><span class="badge badge-tbc">待確認 / 公開 Dashboard 可見</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>MS2Staking 實作合約</td>
+            <td><span class="badge badge-tbc">待確認 / 公開 Dashboard 可見</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="disclaimer">
+        部分合約配置項目仍處於技術審查階段，正式部署前將完成確認。合約地址於任何外部整合前應透過 BscScan 二次驗證。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>審計狀態</h2>
+      <table class="dr-table">
+        <thead>
+          <tr><th>審計範圍</th><th>狀態</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>智能合約審計（整體）</td><td><span class="badge badge-pending">待確認 / 進行中</span></td></tr>
+          <tr><td>代幣合約審計（MS2）</td><td><span class="badge badge-pending">待確認 / 進行中</span></td></tr>
+          <tr><td>抽獎合約審計</td><td><span class="badge badge-pending">待確認 / 進行中</span></td></tr>
+          <tr><td>質押合約審計</td><td><span class="badge badge-pending">待確認 / 進行中</span></td></tr>
+          <tr><td>L1 Testnet 審計</td><td><span class="badge badge-tbc">待確認</span></td></tr>
+          <tr><td>L2 Testnet 審計</td><td><span class="badge badge-tbc">待確認</span></td></tr>
+          <tr><td>主網發布就緒度</td><td><span class="badge badge-progress">進行中</span></td></tr>
+        </tbody>
+      </table>
+      <p>完整審計報告於完成後歸類為 NDA 後可提供。</p>
+    </section>
+
+    <section class="section">
+      <h2>Session 1 活動數據（Phone Gen1）</h2>
+      <p>Session 1 為首次 Phone Gen1 配送活動。</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">目標</div>
+          <div class="card-value" style="font-size: 1.2rem;">1,000 台</div>
+          <div class="card-sub">Phone Gen1 設備</div>
+        </div>
+        <div class="card">
+          <div class="card-label">鏈</div>
+          <div class="card-value" style="font-size: 1rem;">BSC</div>
+          <div class="card-sub">BNB Smart Chain</div>
+        </div>
+        <div class="card">
+          <div class="card-label">入口</div>
+          <div class="card-value" style="font-size: 0.95rem;">payment.magne.ai</div>
+          <div class="card-sub">公開參與入口</div>
+        </div>
+        <div class="card">
+          <div class="card-label">狀態</div>
+          <div class="card-value" style="font-size: 1rem;">最新公開 Dashboard 數據待驗證</div>
+          <div class="card-sub">請查公開 Dashboard 取得最新數據</div>
+        </div>
+      </div>
+      <p>Session 1 最新指標（已中選人數、USDT pool 規模等）請參閱 <a href="https://jerrysohigh-create.github.io/magne-web/tc/lottery-dashboard2.html" target="_blank" rel="noopener">公開抽獎 Dashboard</a>。</p>
+    </section>
+
+    <section class="section">
+      <h2>Session 2 規則（Phone Gen1）</h2>
+      <h3>核心參與規則</h3>
+      <table class="dr-table">
+        <thead>
+          <tr><th>參數</th><th>值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>每輪參與名額</td><td>100</td></tr>
+          <tr><td>每個參與名額費用</td><td>17 USDT</td></tr>
+          <tr><td>每個有效名額 MS2</td><td>10 MS2</td></tr>
+          <tr><td>Phone Gen1 中選觸發</td><td>每 100 個名額觸發 1 次中選</td></tr>
+          <tr><td>未中選 MHA 分配</td><td>100 MHA（合資格性審查）</td></tr>
+          <tr><td>MHA 分配時程</td><td>以 TGE 時程及活動規則為準</td></tr>
+          <tr><td>Phone Gen1 活動名額</td><td>1,600 台</td></tr>
+          <tr><td>合資格分配池</td><td>35,000,000 MHA</td></tr>
+          <tr><td>流動性池啟動條件</td><td>200 台閾值</td></tr>
+        </tbody>
+      </table>
+      <div class="disclaimer">
+        <strong>合規：</strong> MS2 ≠ MHA。100 MHA（每未中選名額）為合資格性分配記錄，非任何保證安排。所有獎勵、合資格性、分配時程及排名依官方活動規則、KYC / AML、防濫用審查、TGE 時程、地區限制及適用規定辦理。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>公開 Dashboard 與連結</h2>
+      <h3>Dashboard</h3>
+      <ul>
+        <li><a href="https://jerrysohigh-create.github.io/magne-web/tc/lottery-dashboard2.html" target="_blank" rel="noopener">公開抽獎 Dashboard v2（Season 2）</a></li>
+        <li><a href="https://jerrysohigh-create.github.io/magne-web/tc/lottery-dashboard.html" target="_blank" rel="noopener">公開抽獎 Dashboard v1（舊版）</a></li>
+        <li><a href="https://www.magne.ai/lottery-dashboard.html" target="_blank" rel="noopener">MAGNE.AI 官方抽獎 Dashboard</a></li>
+        <li><a href="https://dune.com/yolos3565/magne" target="_blank" rel="noopener">Dune Analytics（社群維護）</a></li>
+      </ul>
+      <h3>payment.magne.ai 公開 API 狀態</h3>
+      <table class="dr-table">
+        <thead>
+          <tr><th>端點</th><th>狀態</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>/api/v1/lottery/dashboard</td><td><span class="badge badge-public">公開可讀</span></td></tr>
+          <tr><td>/api/v1/lottery/list</td><td><span class="badge badge-summary">需登入</span></td></tr>
+          <tr><td>/api/v1/lottery2/dashboard</td><td><span class="badge badge-summary">需登入</span></td></tr>
+          <tr><td>/api/v1/lottery2/list</td><td><span class="badge badge-summary">需登入</span></td></tr>
+          <tr><td>/api/v1/lottery2/leaderboard</td><td><span class="badge badge-tbc">公開但目前無資料</span></td></tr>
+        </tbody>
+      </table>
+      <p>最可靠資料請透過上方公開 Dashboard 取得，而非直接 API 整合。</p>
+    </section>
+  </main>
+
+  <footer class="dr-footer">
+    <p>MAGNE.AI 盡職調查資料室 · WEB3 基礎設施 · 最後更新 <span id="last-updated"></span></p>
+  </footer>
+
+  <script src="../assets/dr.js"></script>
+</body>
+</html>
