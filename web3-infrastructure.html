@@ -218,9 +218,9 @@
           <div class="card-sub">Public on-chain pool reference</div>
         </div>
         <div class="card">
-          <div class="card-label">Total Participant Addresses</div>
+          <div class="card-label">Cumulative Participating Wallet Addresses</div>
           <div class="card-value" style="font-size: 1.2rem;">76,650</div>
-          <div class="card-sub">Unique participants</div>
+          <div class="card-sub">Season 1 on-chain activity (Dune Query 7913639)</div>
         </div>
         <div class="card">
           <div class="card-label">Post-TGE MHA Reward Status</div>
@@ -229,6 +229,93 @@
         </div>
       </div>
       <p>Latest Session 1 metrics can be reviewed through the <a href="https://www.magne.ai/lottery-dashboard.html" target="_blank" rel="noopener">Public Lottery Dashboard</a>. MHA-related distribution records are subject to TGE timing, eligibility review, and official campaign rules.</p>
+            <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">Season 1 Historical Reference</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">On-chain participation evidence &middot; Dune Query 7913639 &middot; Cumulative Participating Wallets (daily cumulative snapshot, Apr 17 &ndash; Jul 06, 2026)</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Cumulative Participating Wallets</div>
+          <div class="card-value" style="font-size: 1.2rem;">76,650</div>
+          <div class="card-sub">as of 2026-07-06</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Reference Period</div>
+          <div class="card-value" style="font-size: 1.1rem;">Apr 17 &ndash; Jul 06, 2026</div>
+          <div class="card-sub">~80 days of Season 1 activity</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Data Source</div>
+          <div class="card-value" style="font-size: 1rem;">
+            <a href="https://dune.com/yolos3565/magne" target="_blank" rel="noopener">Dune Query 7913639 &rarr;</a>
+          </div>
+          <div class="card-sub">Refreshed via GitHub Action; not live</div>
+        </div>
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-label">Daily Cumulative &mdash; Sparkline</div>
+          <svg id="s1hp-sparkline" viewBox="0 0 800 120" preserveAspectRatio="none" style="width: 100%; height: 120px; margin-top: 0.5rem; display: block;" aria-label="Season 1 cumulative participating wallets sparkline"></svg>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: monospace;">
+            <span id="s1hp-start">2026-04-17</span>
+            <span id="s1hp-end">2026-07-06</span>
+          </div>
+          <div class="card-sub" style="margin-top: 0.5rem;">
+            Source JSON: <a href="assets/data/dune/season1-participants-growth.json" target="_blank" rel="noopener">assets/data/dune/season1-participants-growth.json</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1; margin-top: 1rem; border-left: 3px solid rgba(255, 184, 0, 0.5); background: rgba(255, 184, 0, 0.05);">
+        <p style="margin: 0; font-size: 0.95rem;">
+          <strong>Disclaimer:</strong> Wallet addresses are not verified unique individuals.
+        </p>
+        <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-tertiary);">
+          <strong>Historical reference only.</strong> This chart is a historical Season 1 on-chain reference and does not represent current Season 2 participation.
+        </p>
+        <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-tertiary);">
+          Metric name: <em>Season 1 Cumulative Participating Wallets</em>. This figure reflects on-chain wallet activity recorded during Season 1 and is provided as historical reference only. It is not a measure of verified users, real users, KYC users, or otherwise confirmed unique human participants.
+        </p>
+      </div>
+      <script>
+      (function() {
+        var svg = document.getElementById('s1hp-sparkline');
+        if (!svg) return;
+        fetch('assets/data/dune/season1-participants-growth.json', { cache: 'no-store' })
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            if (!data) return;
+            var rows = (data.rows || []).slice().sort(function(a, b) {
+              return (a.day || '').localeCompare(b.day || '');
+            });
+            if (!rows.length) return;
+            var W = 800, H = 120, PAD = 8;
+            var minY = rows[0].total_participants;
+            var maxY = rows[rows.length - 1].total_participants;
+            if (maxY === minY) maxY = minY + 1;
+            var stepX = (W - 2 * PAD) / Math.max(1, rows.length - 1);
+            var pts = rows.map(function(r, i) {
+              var x = PAD + i * stepX;
+              var y = PAD + (1 - (r.total_participants - minY) / (maxY - minY)) * (H - 2 * PAD);
+              return [x, y, r];
+            });
+            var linePts = pts.map(function(p) {
+              return p[0].toFixed(1) + ',' + p[1].toFixed(1);
+            }).join(' ');
+            var dots = pts.map(function(p) {
+              return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) +
+                '" r="1.5" fill="#3a8dde"><title>' + p[2].day + ': ' +
+                Number(p[2].total_participants).toLocaleString('en-US') + '</title></circle>';
+            }).join('');
+            svg.innerHTML =
+              '<polyline points="' + linePts + '" fill="none" stroke="#3a8dde" stroke-width="1.5"/>' +
+              dots;
+            var startEl = document.getElementById('s1hp-start');
+            var endEl = document.getElementById('s1hp-end');
+            if (startEl && rows[0].day) startEl.textContent = rows[0].day;
+            if (endEl && rows[rows.length-1].day) endEl.textContent = rows[rows.length-1].day;
+          })
+          .catch(function() { /* silent */ });
+      })();
+      </script>
+
     </section>
 
     <section class="section">

@@ -217,9 +217,9 @@
           <div class="card-sub">公開鏈上金池參考</div>
         </div>
         <div class="card">
-          <div class="card-label">總參與地址數</div>
+          <div class="card-label">累計參與錢包地址數</div>
           <div class="card-value" style="font-size: 1.2rem;">76,650</div>
-          <div class="card-sub">獨立參與者</div>
+          <div class="card-sub">Season 1 鏈上活動（Dune Query 7913639）</div>
         </div>
         <div class="card">
           <div class="card-label">TGE 後 MHA 獎勵狀態</div>
@@ -228,6 +228,93 @@
         </div>
       </div>
       <p>Session 1 最新指標可通過<a href="https://www.magne.ai/tc/lottery-dashboard.html" target="_blank" rel="noopener">公開抽獎 Dashboard</a>查看。MHA 相關分配記錄以 TGE 時間、合資格審查及官方活動規則為準。</p>
+            <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">Season 1 歷史參與數據參考</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">鏈上參與證據 &middot; Dune Query 7913639 &middot; 累計參與錢包地址增長（每日累計快照，2026-04-17 至 2026-07-06）</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">累計參與錢包地址數</div>
+          <div class="card-value" style="font-size: 1.2rem;">76,650</div>
+          <div class="card-sub">截至 2026-07-06</div>
+        </div>
+        <div class="card">
+          <div class="card-label">參考期間</div>
+          <div class="card-value" style="font-size: 1.1rem;">2026-04-17 至 2026-07-06</div>
+          <div class="card-sub">Season 1 約 80 天活動</div>
+        </div>
+        <div class="card">
+          <div class="card-label">資料來源</div>
+          <div class="card-value" style="font-size: 1rem;">
+            <a href="https://dune.com/yolos3565/magne" target="_blank" rel="noopener">Dune Query 7913639 &rarr;</a>
+          </div>
+          <div class="card-sub">由 GitHub Action 刷新；非即時</div>
+        </div>
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-label">每日累計 &mdash; Sparkline</div>
+          <svg id="s1hp-sparkline" viewBox="0 0 800 120" preserveAspectRatio="none" style="width: 100%; height: 120px; margin-top: 0.5rem; display: block;" aria-label="Season 1 累計參與錢包地址增長 sparkline"></svg>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: monospace;">
+            <span id="s1hp-start">2026-04-17</span>
+            <span id="s1hp-end">2026-07-06</span>
+          </div>
+          <div class="card-sub" style="margin-top: 0.5rem;">
+            來源 JSON：<a href="assets/data/dune/season1-participants-growth.json" target="_blank" rel="noopener">assets/data/dune/season1-participants-growth.json</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1; margin-top: 1rem; border-left: 3px solid rgba(255, 184, 0, 0.5); background: rgba(255, 184, 0, 0.05);">
+        <p style="margin: 0; font-size: 0.95rem;">
+          <strong>免責聲明：</strong>參與錢包地址不等同於經過驗證的唯一真人用戶。
+        </p>
+        <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-tertiary);">
+          <strong>僅作為歷史參考。</strong>本圖為 Season 1 歷史鏈上參考，不代表 Season 2 當前參與數據。
+        </p>
+        <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-tertiary);">
+          指標名稱：<em>Season 1 累計參與錢包地址增長</em>。此數據反映 Season 1 期間記錄到的鏈上錢包活動，僅作為歷史參考。它並非「已驗證用戶」、「真實用戶」、「KYC 用戶」或其他經確認的唯一人類參與者之衡量。
+        </p>
+      </div>
+      <script>
+      (function() {
+        var svg = document.getElementById('s1hp-sparkline');
+        if (!svg) return;
+        fetch('assets/data/dune/season1-participants-growth.json', { cache: 'no-store' })
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            if (!data) return;
+            var rows = (data.rows || []).slice().sort(function(a, b) {
+              return (a.day || '').localeCompare(b.day || '');
+            });
+            if (!rows.length) return;
+            var W = 800, H = 120, PAD = 8;
+            var minY = rows[0].total_participants;
+            var maxY = rows[rows.length - 1].total_participants;
+            if (maxY === minY) maxY = minY + 1;
+            var stepX = (W - 2 * PAD) / Math.max(1, rows.length - 1);
+            var pts = rows.map(function(r, i) {
+              var x = PAD + i * stepX;
+              var y = PAD + (1 - (r.total_participants - minY) / (maxY - minY)) * (H - 2 * PAD);
+              return [x, y, r];
+            });
+            var linePts = pts.map(function(p) {
+              return p[0].toFixed(1) + ',' + p[1].toFixed(1);
+            }).join(' ');
+            var dots = pts.map(function(p) {
+              return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) +
+                '" r="1.5" fill="#3a8dde"><title>' + p[2].day + ': ' +
+                Number(p[2].total_participants).toLocaleString('en-US') + '</title></circle>';
+            }).join('');
+            svg.innerHTML =
+              '<polyline points="' + linePts + '" fill="none" stroke="#3a8dde" stroke-width="1.5"/>' +
+              dots;
+            var startEl = document.getElementById('s1hp-start');
+            var endEl = document.getElementById('s1hp-end');
+            if (startEl && rows[0].day) startEl.textContent = rows[0].day;
+            if (endEl && rows[rows.length-1].day) endEl.textContent = rows[rows.length-1].day;
+          })
+          .catch(function() { /* silent */ });
+      })();
+      </script>
+
     </section>
 
     <section class="section">

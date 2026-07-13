@@ -1,0 +1,321 @@
+{
+  "query_id": 7913639,
+  "source": "dune",
+  "source_url": "https://dune.com/yolos3565/magne",
+  "metric_name": "Season 1 Cumulative Participating Wallets",
+  "metric_note": "Wallet addresses are not equivalent to verified unique individuals.",
+  "last_result_at": "2026-07-09T09:56:03.767034Z",
+  "latest": {
+    "day": "2026-07-06",
+    "total_participants": 76650
+  },
+  "milestones": {
+    "2026-04-25": 2185,
+    "2026-05-17": 10028,
+    "2026-06-13": 36767,
+    "2026-06-25": 74270,
+    "2026-07-06": 76650
+  },
+  "rows": [
+    {
+      "day": "2026-04-17",
+      "total_participants": 2
+    },
+    {
+      "day": "2026-04-18",
+      "total_participants": 1353
+    },
+    {
+      "day": "2026-04-19",
+      "total_participants": 1534
+    },
+    {
+      "day": "2026-04-20",
+      "total_participants": 1659
+    },
+    {
+      "day": "2026-04-21",
+      "total_participants": 1749
+    },
+    {
+      "day": "2026-04-22",
+      "total_participants": 1896
+    },
+    {
+      "day": "2026-04-23",
+      "total_participants": 2026
+    },
+    {
+      "day": "2026-04-24",
+      "total_participants": 2139
+    },
+    {
+      "day": "2026-04-25",
+      "total_participants": 2185
+    },
+    {
+      "day": "2026-04-26",
+      "total_participants": 2249
+    },
+    {
+      "day": "2026-04-27",
+      "total_participants": 2283
+    },
+    {
+      "day": "2026-04-28",
+      "total_participants": 2308
+    },
+    {
+      "day": "2026-04-29",
+      "total_participants": 2377
+    },
+    {
+      "day": "2026-04-30",
+      "total_participants": 2405
+    },
+    {
+      "day": "2026-05-01",
+      "total_participants": 2417
+    },
+    {
+      "day": "2026-05-02",
+      "total_participants": 2441
+    },
+    {
+      "day": "2026-05-03",
+      "total_participants": 2444
+    },
+    {
+      "day": "2026-05-04",
+      "total_participants": 2457
+    },
+    {
+      "day": "2026-05-05",
+      "total_participants": 2508
+    },
+    {
+      "day": "2026-05-06",
+      "total_participants": 2519
+    },
+    {
+      "day": "2026-05-07",
+      "total_participants": 2536
+    },
+    {
+      "day": "2026-05-08",
+      "total_participants": 2566
+    },
+    {
+      "day": "2026-05-09",
+      "total_participants": 2579
+    },
+    {
+      "day": "2026-05-10",
+      "total_participants": 2582
+    },
+    {
+      "day": "2026-05-11",
+      "total_participants": 2590
+    },
+    {
+      "day": "2026-05-12",
+      "total_participants": 2787
+    },
+    {
+      "day": "2026-05-13",
+      "total_participants": 3180
+    },
+    {
+      "day": "2026-05-14",
+      "total_participants": 3223
+    },
+    {
+      "day": "2026-05-15",
+      "total_participants": 5764
+    },
+    {
+      "day": "2026-05-16",
+      "total_participants": 7825
+    },
+    {
+      "day": "2026-05-17",
+      "total_participants": 10028
+    },
+    {
+      "day": "2026-05-18",
+      "total_participants": 10030
+    },
+    {
+      "day": "2026-05-19",
+      "total_participants": 10045
+    },
+    {
+      "day": "2026-05-20",
+      "total_participants": 10046
+    },
+    {
+      "day": "2026-05-21",
+      "total_participants": 10075
+    },
+    {
+      "day": "2026-05-22",
+      "total_participants": 10078
+    },
+    {
+      "day": "2026-05-23",
+      "total_participants": 10083
+    },
+    {
+      "day": "2026-05-24",
+      "total_participants": 10096
+    },
+    {
+      "day": "2026-05-26",
+      "total_participants": 10099
+    },
+    {
+      "day": "2026-05-27",
+      "total_participants": 10109
+    },
+    {
+      "day": "2026-05-28",
+      "total_participants": 10110
+    },
+    {
+      "day": "2026-05-29",
+      "total_participants": 10111
+    },
+    {
+      "day": "2026-05-30",
+      "total_participants": 10117
+    },
+    {
+      "day": "2026-06-01",
+      "total_participants": 10118
+    },
+    {
+      "day": "2026-06-02",
+      "total_participants": 10121
+    },
+    {
+      "day": "2026-06-03",
+      "total_participants": 10130
+    },
+    {
+      "day": "2026-06-04",
+      "total_participants": 12459
+    },
+    {
+      "day": "2026-06-05",
+      "total_participants": 12460
+    },
+    {
+      "day": "2026-06-06",
+      "total_participants": 14849
+    },
+    {
+      "day": "2026-06-09",
+      "total_participants": 19948
+    },
+    {
+      "day": "2026-06-10",
+      "total_participants": 19956
+    },
+    {
+      "day": "2026-06-11",
+      "total_participants": 25948
+    },
+    {
+      "day": "2026-06-12",
+      "total_participants": 25976
+    },
+    {
+      "day": "2026-06-13",
+      "total_participants": 36767
+    },
+    {
+      "day": "2026-06-14",
+      "total_participants": 40201
+    },
+    {
+      "day": "2026-06-15",
+      "total_participants": 44957
+    },
+    {
+      "day": "2026-06-16",
+      "total_participants": 51191
+    },
+    {
+      "day": "2026-06-17",
+      "total_participants": 53972
+    },
+    {
+      "day": "2026-06-18",
+      "total_participants": 55422
+    },
+    {
+      "day": "2026-06-19",
+      "total_participants": 55427
+    },
+    {
+      "day": "2026-06-20",
+      "total_participants": 56696
+    },
+    {
+      "day": "2026-06-21",
+      "total_participants": 58757
+    },
+    {
+      "day": "2026-06-22",
+      "total_participants": 62395
+    },
+    {
+      "day": "2026-06-23",
+      "total_participants": 62419
+    },
+    {
+      "day": "2026-06-24",
+      "total_participants": 65900
+    },
+    {
+      "day": "2026-06-25",
+      "total_participants": 74270
+    },
+    {
+      "day": "2026-06-26",
+      "total_participants": 74775
+    },
+    {
+      "day": "2026-06-27",
+      "total_participants": 75033
+    },
+    {
+      "day": "2026-06-28",
+      "total_participants": 75034
+    },
+    {
+      "day": "2026-06-29",
+      "total_participants": 75036
+    },
+    {
+      "day": "2026-06-30",
+      "total_participants": 75046
+    },
+    {
+      "day": "2026-07-01",
+      "total_participants": 76316
+    },
+    {
+      "day": "2026-07-03",
+      "total_participants": 76318
+    },
+    {
+      "day": "2026-07-05",
+      "total_participants": 76322
+    },
+    {
+      "day": "2026-07-06",
+      "total_participants": 76650
+    }
+  ]
+}
