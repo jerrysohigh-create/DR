@@ -258,7 +258,7 @@
             <span id="s1hp-end">2026-07-06</span>
           </div>
           <div class="card-sub" style="margin-top: 0.5rem;">
-            Source JSON: <a href="assets/data/dune/season1-participants-growth.json" target="_blank" rel="noopener">assets/data/dune/season1-participants-growth.json</a>
+            Source JSON: <a href="/DR/assets/data/dune/season1-participants-growth.json" target="_blank" rel="noopener">/DR/assets/data/dune/season1-participants-growth.json</a>
           </div>
         </div>
       </div>
@@ -278,14 +278,19 @@
       (function() {
         var svg = document.getElementById('s1hp-sparkline');
         if (!svg) return;
-        fetch('assets/data/dune/season1-participants-growth.json', { cache: 'no-store' })
+        var FALLBACK_MSG = 'Sparkline data is temporarily unavailable.';
+        function showFallback() {
+          if (!svg) return;
+          svg.innerHTML = '<text x="400" y="65" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="13">' + FALLBACK_MSG + '</text>';
+        }
+        fetch('/DR/assets/data/dune/season1-participants-growth.json', { cache: 'no-store' })
           .then(function(r) { return r.ok ? r.json() : null; })
           .then(function(data) {
-            if (!data) return;
+            if (!data) { showFallback(); return; }
             var rows = (data.rows || []).slice().sort(function(a, b) {
               return (a.day || '').localeCompare(b.day || '');
             });
-            if (!rows.length) return;
+            if (!rows.length) { showFallback(); return; }
             var W = 800, H = 120, PAD = 8;
             var minY = rows[0].total_participants;
             var maxY = rows[rows.length - 1].total_participants;
@@ -299,6 +304,7 @@
             var linePts = pts.map(function(p) {
               return p[0].toFixed(1) + ',' + p[1].toFixed(1);
             }).join(' ');
+            if (!linePts) { showFallback(); return; }
             var dots = pts.map(function(p) {
               return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) +
                 '" r="1.5" fill="#3a8dde"><title>' + p[2].day + ': ' +
@@ -312,7 +318,7 @@
             if (startEl && rows[0].day) startEl.textContent = rows[0].day;
             if (endEl && rows[rows.length-1].day) endEl.textContent = rows[rows.length-1].day;
           })
-          .catch(function() { /* silent */ });
+          .catch(function() { showFallback(); });
       })();
       </script>
 
