@@ -249,15 +249,15 @@
           </div>
           <div class="card-sub">由 GitHub Action 刷新；非即時</div>
         </div>
-        <div class="card" style="grid-column: 1 / -1;">
-          <div class="card-label">每日累計 &mdash; Sparkline</div>
-          <svg id="s1hp-sparkline" viewBox="0 0 800 120" preserveAspectRatio="none" style="width: 100%; height: 120px; margin-top: 0.5rem; display: block;" aria-label="Season 1 累計參與錢包地址增長 sparkline"></svg>
-          <div style="display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: monospace;">
-            <span id="s1hp-start">2026-04-17</span>
-            <span id="s1hp-end">2026-07-06</span>
+                <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-label">Season 1 累計參與錢包地址增長</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin: -0.3rem 0 0.7rem; font-family: 'JetBrains Mono', monospace;">每日累計鏈上快照 &middot; Dune Query 7913639 &middot; 2026-04-17 至 2026-07-06</div>
+          <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px;">
+            <svg id="s1hp-barchart" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" style="display: block; width: 100%; min-width: 720px; height: auto;" role="img" aria-label="Season 1 累計參與錢包地址增長 柱狀圖"></svg>
           </div>
           <div class="card-sub" style="margin-top: 0.5rem;">
             來源 JSON：<a href="/DR/assets/data/dune/season1-participants-growth.json" target="_blank" rel="noopener">/DR/assets/data/dune/season1-participants-growth.json</a>
+            &middot; 刷新時間：<span id="s1hp-refreshed">&mdash;</span>
           </div>
         </div>
       </div>
@@ -275,12 +275,12 @@
       </div>
       <script>
       (function() {
-        var svg = document.getElementById('s1hp-sparkline');
+        var svg = document.getElementById('s1hp-barchart');
         if (!svg) return;
-        var FALLBACK_MSG = '折線圖數據暫時無法載入。';
+        var FALLBACK_MSG = "\u5716\u8868\u6578\u64da\u66ab\u6642\u7121\u6cd5\u8f09\u5165\u3002";
         function showFallback() {
           if (!svg) return;
-          svg.innerHTML = '<text x="400" y="65" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="13">' + FALLBACK_MSG + '</text>';
+          svg.innerHTML = '<text x="450" y="180" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="14">' + FALLBACK_MSG + '</text>';
         }
         fetch('/DR/assets/data/dune/season1-participants-growth.json', { cache: 'no-store' })
           .then(function(r) { return r.ok ? r.json() : null; })
@@ -290,32 +290,59 @@
               return (a.day || '').localeCompare(b.day || '');
             });
             if (!rows.length) { showFallback(); return; }
-            var W = 800, H = 120, PAD = 8;
-            var minY = rows[0].total_participants;
-            var maxY = rows[rows.length - 1].total_participants;
-            if (maxY === minY) maxY = minY + 1;
-            var stepX = (W - 2 * PAD) / Math.max(1, rows.length - 1);
-            var pts = rows.map(function(r, i) {
-              var x = PAD + i * stepX;
-              var y = PAD + (1 - (r.total_participants - minY) / (maxY - minY)) * (H - 2 * PAD);
-              return [x, y, r];
+
+            var W = 900, H = 340;
+            var MT = 30, MR = 20, MB = 50, ML = 60;
+            var chartW = W - ML - MR;
+            var chartH = H - MT - MB;
+            var yMax = 80000;
+            var yTicks = [0, 20000, 40000, 60000, 80000];
+            var milestones = {
+              '2026-04-25': 2185, '2026-05-17': 10028, '2026-06-13': 36767,
+              '2026-06-25': 74270, '2026-07-06': 76650
+            };
+            var xKeyDates = ["2026-04-17", "2026-04-25", "2026-05-17", "2026-06-13", "2026-06-25", "2026-07-06"];
+            var xKeyLabels = ["04-17", "04-25", "05-17", "06-13", "06-25", "07-06"];
+
+            var parts = [];
+            yTicks.forEach(function(tick) {
+              var y = MT + chartH - (tick / yMax) * chartH;
+              parts.push('<line x1="' + ML + '" y1="' + y + '" x2="' + (ML + chartW) + '" y2="' + y + '" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>');
+              var label = tick === 0 ? '0' : (tick / 1000) + 'k';
+              parts.push('<text x="' + (ML - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-family="JetBrains Mono, monospace" font-size="11">' + label + '</text>');
             });
-            var linePts = pts.map(function(p) {
-              return p[0].toFixed(1) + ',' + p[1].toFixed(1);
-            }).join(' ');
-            if (!linePts) { showFallback(); return; }
-            var dots = pts.map(function(p) {
-              return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) +
-                '" r="1.5" fill="#3a8dde"><title>' + p[2].day + ': ' +
-                Number(p[2].total_participants).toLocaleString('en-US') + '</title></circle>';
-            }).join('');
-            svg.innerHTML =
-              '<polyline points="' + linePts + '" fill="none" stroke="#3a8dde" stroke-width="1.5"/>' +
-              dots;
-            var startEl = document.getElementById('s1hp-start');
-            var endEl = document.getElementById('s1hp-end');
-            if (startEl && rows[0].day) startEl.textContent = rows[0].day;
-            if (endEl && rows[rows.length-1].day) endEl.textContent = rows[rows.length-1].day;
+
+            var n = rows.length;
+            var slot = chartW / n;
+            var barW = slot * 0.7;
+            var barOffset = (slot - barW) / 2;
+            rows.forEach(function(r, i) {
+              var x = ML + i * slot + barOffset;
+              var h = (r.total_participants / yMax) * chartH;
+              var y = MT + chartH - h;
+              var isMilestone = milestones.hasOwnProperty(r.day);
+              var fill = isMilestone ? '#00d4d4' : 'rgba(0, 212, 212, 0.55)';
+              parts.push('<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="' + fill + '"><title>' + r.day + ': ' + r.total_participants.toLocaleString('en-US') + '</title></rect>');
+              if (isMilestone) {
+                parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (y - 6).toFixed(1) + '" text-anchor="middle" fill="#fff" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">' + r.total_participants.toLocaleString('en-US') + '</text>');
+              }
+            });
+
+            parts.push('<line x1="' + ML + '" y1="' + (MT + chartH) + '" x2="' + (ML + chartW) + '" y2="' + (MT + chartH) + '" stroke="#888" stroke-width="1"/>');
+
+            rows.forEach(function(r, i) {
+              var idx = xKeyDates.indexOf(r.day);
+              if (idx >= 0) {
+                var cx = ML + i * slot + slot / 2;
+                parts.push('<line x1="' + cx.toFixed(1) + '" y1="' + (MT + chartH) + '" x2="' + cx.toFixed(1) + '" y2="' + (MT + chartH + 5) + '" stroke="#888" stroke-width="1"/>');
+                parts.push('<text x="' + cx.toFixed(1) + '" y="' + (MT + chartH + 20) + '" text-anchor="middle" fill="#aaa" font-family="sans-serif" font-size="11">' + xKeyLabels[idx] + '</text>');
+              }
+            });
+
+            svg.innerHTML = parts.join('');
+
+            var refEl = document.getElementById('s1hp-refreshed');
+            if (refEl && data.last_result_at) refEl.textContent = data.last_result_at;
           })
           .catch(function() { showFallback(); });
       })();
