@@ -204,6 +204,151 @@
     </section>
 
     <section class="section">
+      <h2>Public Sale OG</h2>
+      <p>Reported Public Sale OG Amount denominated in MHA &middot; Dune Query 7924103 &middot; 2025-10-29 to 2026-03-14 &middot; lock-up 6 months after listing, then continuous release over 24 months</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Reported Public Sale OG Amount</div>
+          <div class="card-value" style="font-size: 1.2rem;">13,328,547 MHA</div>
+          <div class="card-sub">rounded; underlying = 13,328,547.463653 MHA</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Participants / Records</div>
+          <div class="card-value" style="font-size: 1.2rem;">1,082</div>
+          <div class="card-sub">distinct entries in Dune purchase records</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Purchase Period</div>
+          <div class="card-value" style="font-size: 1.05rem;">2025-10-29 &ndash; 2026-03-14</div>
+          <div class="card-sub">~4.5 months of recorded purchases</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Price Level</div>
+          <div class="card-value" style="font-size: 1rem;">Lowest public-sale price</div>
+          <div class="card-sub">Early-supporter OG round</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Lock-up</div>
+          <div class="card-value" style="font-size: 1.2rem;">6 months</div>
+          <div class="card-sub">after listing</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Vesting</div>
+          <div class="card-value" style="font-size: 1rem;">continuous release</div>
+          <div class="card-sub">over 24 months after lock-up</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Data Source</div>
+          <div class="card-value" style="font-size: 1rem;">
+            <a href="https://dune.com/yolos3565/magne" target="_blank" rel="noopener">Dune Query 7924103 &rarr;</a>
+          </div>
+          <div class="card-sub">Refreshed server-side; not live.</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">Public Sale OG &mdash; Round Summary</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">Pricing &middot; lock-up &middot; vesting &middot; subject to applicable listing arrangements, exchange procedures, and compliance review</p>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem; line-height: 1.5;">Prior to listing, an early-supporter public sale is planned at the lowest public-sale price. At the time of listing, the intended listing reference price will not be below this public-sale level, subject to applicable listing arrangements, exchange procedures, and compliance review.</p>
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Tokens from the Public Sale OG round will be locked for six months after listing and then released continuously over twenty-four months.</p>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">Public Sale OG Purchase History</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">MHA-denominated purchase records &middot; 6 rows &middot; 2025-10-29 to 2026-03-14</p>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-label">Daily Purchase Volume (MHA)</div>
+        <div style="font-size: 0.78rem; color: var(--text-tertiary); margin: -0.3rem 0 0.7rem; font-family: 'JetBrains Mono', monospace;">Bars: per-row MHA raised &middot; Y-axis in MHA</div>
+        <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px;">
+          <svg id="s1hp-og-barchart" viewBox="0 0 800 280" preserveAspectRatio="xMidYMid meet" style="display: block; width: 100%; min-width: 640px; height: auto;" role="img" aria-label="Public Sale OG purchase history bar chart"></svg>
+        </div>
+        <div class="card-sub" style="margin-top: 0.5rem;">
+          Source JSON: <a href="/DR/assets/data/dune/public-sale-og-mha.json" target="_blank" rel="noopener">/DR/assets/data/dune/public-sale-og-mha.json</a>
+          &middot; Refreshed: <span id="s1hp-og-refreshed">&mdash;</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid rgba(255, 184, 0, 0.5); background: rgba(255, 184, 0, 0.05);">
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">
+          <strong>Disclaimer:</strong> This public sale chart reflects Dune query results denominated in MHA and should be reconciled with internal sale records, treasury records, refund records, and compliance review. It does not constitute investment advice, a guaranteed listing outcome, or a guarantee of future market performance.
+        </p>
+      </div>
+
+      <script>
+      (function() {
+        var svg = document.getElementById('s1hp-og-barchart');
+        if (!svg) return;
+        var FALLBACK_MSG = "Chart data is temporarily unavailable.";
+        function showFallback() {
+          if (!svg) return;
+          svg.innerHTML = '<text x="400" y="140" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="14">' + FALLBACK_MSG + '</text>';
+        }
+        fetch('/DR/assets/data/dune/public-sale-og-mha.json', { cache: 'no-store' })
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            if (!data) { showFallback(); return; }
+            var rows = (data.rows || []).slice().sort(function(a, b) {
+              return (a.day || '').localeCompare(b.day || '');
+            });
+            if (!rows.length) { showFallback(); return; }
+
+            var values = rows.map(function(r) { return Number(r.raised_mha) || 0; });
+            var maxVal = Math.max.apply(null, values);
+            var niceMax = Math.ceil(maxVal / 1000000) * 1000000;
+            if (niceMax < maxVal) niceMax = maxVal;
+
+            var W = 800, H = 280;
+            var MT = 30, MR = 20, MB = 60, ML = 70;
+            var chartW = W - ML - MR;
+            var chartH = H - MT - MB;
+
+            var parts = [];
+            var yTickCount = 5;
+            for (var t = 0; t <= yTickCount; t++) {
+              var tickVal = (niceMax / yTickCount) * t;
+              var y = MT + chartH - (tickVal / niceMax) * chartH;
+              parts.push('<line x1="' + ML + '" y1="' + y + '" x2="' + (ML + chartW) + '" y2="' + y + '" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>');
+              var label = tickVal === 0 ? '0' : (tickVal / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+              parts.push('<text x="' + (ML - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-family="JetBrains Mono, monospace" font-size="11">' + label + '</text>');
+            }
+            parts.push('<text x="' + (ML - 8) + '" y="' + (MT - 12) + '" text-anchor="end" fill="#00d4d4" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">MHA</text>');
+
+            var n = rows.length;
+            var slot = chartW / n;
+            var barW = slot * 0.55;
+            var barOffset = (slot - barW) / 2;
+            rows.forEach(function(r, i) {
+              var x = ML + i * slot + barOffset;
+              var h = (Number(r.raised_mha) / niceMax) * chartH;
+              var y = MT + chartH - h;
+              var val = Number(r.raised_mha);
+              var displayVal = val >= 1000000 ? (val / 1000000).toFixed(2) + 'M' :
+                                val >= 1000 ? (val / 1000).toFixed(1) + 'K' :
+                                val.toFixed(0);
+              parts.push('<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="#00d4d4"><title>' + r.day + ': ' + Math.round(val).toLocaleString('en-US') + ' MHA</title></rect>');
+              parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle" fill="#fff" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">' + displayVal + '</text>');
+              parts.push('<line x1="' + (x + barW / 2).toFixed(1) + '" y1="' + (MT + chartH) + '" x2="' + (x + barW / 2).toFixed(1) + '" y2="' + (MT + chartH + 4) + '" stroke="#888" stroke-width="1"/>');
+              var shortDate = r.day.substring(5);
+              parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (MT + chartH + 20) + '" text-anchor="middle" fill="#aaa" font-family="sans-serif" font-size="11">' + shortDate + '</text>');
+            });
+
+            parts.push('<line x1="' + ML + '" y1="' + (MT + chartH) + '" x2="' + (ML + chartW) + '" y2="' + (MT + chartH) + '" stroke="#888" stroke-width="1"/>');
+
+            svg.innerHTML = parts.join('');
+
+            var refEl = document.getElementById('s1hp-og-refreshed');
+            if (refEl && data.last_result_at) refEl.textContent = data.last_result_at;
+          })
+          .catch(function() { showFallback(); });
+      })();
+      </script>
+    </section>
+
+
+
+<section class="section">
       <h2>Session 1 Activity Data</h2>
       <p>MAGNE.AI Phone Gen1 (MAG1)</p>
       <div class="card-grid">

@@ -203,6 +203,151 @@
     </section>
 
     <section class="section">
+      <h2>公開銷售 OG 輪</h2>
+      <p>以 MHA 計價的公開銷售 OG 輪統計數量 &middot; Dune Query 7924103 &middot; 2025-10-29 至 2026-03-14 &middot; 上市後鎖定 6 個月，鎖定期後 24 個月連續釋放</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">公開銷售 OG 輪統計數量</div>
+          <div class="card-value" style="font-size: 1.2rem;">13,328,547 MHA</div>
+          <div class="card-sub">四捨五入；實際 = 13,328,547.463653 MHA</div>
+        </div>
+        <div class="card">
+          <div class="card-label">參與記錄</div>
+          <div class="card-value" style="font-size: 1.2rem;">1,082</div>
+          <div class="card-sub">Dune 購買記錄中的獨立筆數</div>
+        </div>
+        <div class="card">
+          <div class="card-label">購買期間</div>
+          <div class="card-value" style="font-size: 1.05rem;">2025-10-29 &ndash; 2026-03-14</div>
+          <div class="card-sub">約 4.5 個月購買記錄</div>
+        </div>
+        <div class="card">
+          <div class="card-label">價格級距</div>
+          <div class="card-value" style="font-size: 1rem;">最低公開銷售價格</div>
+          <div class="card-sub">早期支持者 OG 輪</div>
+        </div>
+        <div class="card">
+          <div class="card-label">鎖定期</div>
+          <div class="card-value" style="font-size: 1.2rem;">6 個月</div>
+          <div class="card-sub">上市後起算</div>
+        </div>
+        <div class="card">
+          <div class="card-label">釋放期</div>
+          <div class="card-value" style="font-size: 1rem;">連續釋放</div>
+          <div class="card-sub">鎖定期後 24 個月</div>
+        </div>
+        <div class="card">
+          <div class="card-label">資料來源</div>
+          <div class="card-value" style="font-size: 1rem;">
+            <a href="https://dune.com/yolos3565/magne" target="_blank" rel="noopener">Dune Query 7924103 &rarr;</a>
+          </div>
+          <div class="card-sub">由伺服器端刷新；非即時</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">公開銷售 OG 輪 &mdash; 規則摘要</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">價格 &middot; 鎖定 &middot; 釋放 &middot; 以適用的上市安排、交易所流程及合規審查為準</p>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem; line-height: 1.5;">上市前，項目將面向早期支持者進行公開銷售 OG 輪，該輪價格為最低公開銷售價格。上市時，預期上市參考價格不低於該公開銷售價格水平，具體以適用的上市安排、交易所流程及合規審查為準。</p>
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Public Sale OG 輪代幣將於上市後鎖定六個月，之後在二十四個月內連續釋放。</p>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 0.25rem;">公開銷售 OG 輪購買歷史</h3>
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0 0 1rem;">以 MHA 計價的購買記錄 &middot; 6 列 &middot; 2025-10-29 至 2026-03-14</p>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-label">每日購買量（MHA）</div>
+        <div style="font-size: 0.78rem; color: var(--text-tertiary); margin: -0.3rem 0 0.7rem; font-family: 'JetBrains Mono', monospace;">柱狀：每列 MHA 募資量 &middot; Y 軸單位 MHA</div>
+        <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px;">
+          <svg id="s1hp-og-barchart" viewBox="0 0 800 280" preserveAspectRatio="xMidYMid meet" style="display: block; width: 100%; min-width: 640px; height: auto;" role="img" aria-label="公開銷售 OG 輪購買歷史柱狀圖"></svg>
+        </div>
+        <div class="card-sub" style="margin-top: 0.5rem;">
+          來源 JSON：<a href="/DR/assets/data/dune/public-sale-og-mha.json" target="_blank" rel="noopener">/DR/assets/data/dune/public-sale-og-mha.json</a>
+          &middot; 刷新時間：<span id="s1hp-og-refreshed">&mdash;</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid rgba(255, 184, 0, 0.5); background: rgba(255, 184, 0, 0.05);">
+        <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">
+          <strong>免責聲明：</strong>本公開銷售圖表反映以 MHA 計價的 Dune 查詢結果，應與內部銷售記錄、金庫記錄、退款記錄及合規審查交叉核對。本內容不構成投資建議、上市結果保證或未來市場表現保證。
+        </p>
+      </div>
+
+      <script>
+      (function() {
+        var svg = document.getElementById('s1hp-og-barchart');
+        if (!svg) return;
+        var FALLBACK_MSG = "\u5716\u8868\u6578\u64da\u66ab\u6642\u7121\u6cd5\u8f09\u5165\u3002";
+        function showFallback() {
+          if (!svg) return;
+          svg.innerHTML = '<text x="400" y="140" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="14">' + FALLBACK_MSG + '</text>';
+        }
+        fetch('/DR/assets/data/dune/public-sale-og-mha.json', { cache: 'no-store' })
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            if (!data) { showFallback(); return; }
+            var rows = (data.rows || []).slice().sort(function(a, b) {
+              return (a.day || '').localeCompare(b.day || '');
+            });
+            if (!rows.length) { showFallback(); return; }
+
+            var values = rows.map(function(r) { return Number(r.raised_mha) || 0; });
+            var maxVal = Math.max.apply(null, values);
+            var niceMax = Math.ceil(maxVal / 1000000) * 1000000;
+            if (niceMax < maxVal) niceMax = maxVal;
+
+            var W = 800, H = 280;
+            var MT = 30, MR = 20, MB = 60, ML = 70;
+            var chartW = W - ML - MR;
+            var chartH = H - MT - MB;
+
+            var parts = [];
+            var yTickCount = 5;
+            for (var t = 0; t <= yTickCount; t++) {
+              var tickVal = (niceMax / yTickCount) * t;
+              var y = MT + chartH - (tickVal / niceMax) * chartH;
+              parts.push('<line x1="' + ML + '" y1="' + y + '" x2="' + (ML + chartW) + '" y2="' + y + '" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>');
+              var label = tickVal === 0 ? '0' : (tickVal / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+              parts.push('<text x="' + (ML - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-family="JetBrains Mono, monospace" font-size="11">' + label + '</text>');
+            }
+            parts.push('<text x="' + (ML - 8) + '" y="' + (MT - 12) + '" text-anchor="end" fill="#00d4d4" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">MHA</text>');
+
+            var n = rows.length;
+            var slot = chartW / n;
+            var barW = slot * 0.55;
+            var barOffset = (slot - barW) / 2;
+            rows.forEach(function(r, i) {
+              var x = ML + i * slot + barOffset;
+              var h = (Number(r.raised_mha) / niceMax) * chartH;
+              var y = MT + chartH - h;
+              var val = Number(r.raised_mha);
+              var displayVal = val >= 1000000 ? (val / 1000000).toFixed(2) + 'M' :
+                                val >= 1000 ? (val / 1000).toFixed(1) + 'K' :
+                                val.toFixed(0);
+              parts.push('<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="#00d4d4"><title>' + r.day + ': ' + Math.round(val).toLocaleString('en-US') + ' MHA</title></rect>');
+              parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle" fill="#fff" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">' + displayVal + '</text>');
+              parts.push('<line x1="' + (x + barW / 2).toFixed(1) + '" y1="' + (MT + chartH) + '" x2="' + (x + barW / 2).toFixed(1) + '" y2="' + (MT + chartH + 4) + '" stroke="#888" stroke-width="1"/>');
+              var shortDate = r.day.substring(5);
+              parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (MT + chartH + 20) + '" text-anchor="middle" fill="#aaa" font-family="sans-serif" font-size="11">' + shortDate + '</text>');
+            });
+
+            parts.push('<line x1="' + ML + '" y1="' + (MT + chartH) + '" x2="' + (ML + chartW) + '" y2="' + (MT + chartH) + '" stroke="#888" stroke-width="1"/>');
+
+            svg.innerHTML = parts.join('');
+
+            var refEl = document.getElementById('s1hp-og-refreshed');
+            if (refEl && data.last_result_at) refEl.textContent = data.last_result_at;
+          })
+          .catch(function() { showFallback(); });
+      })();
+      </script>
+    </section>
+
+
+
+<section class="section">
       <h2>Session 1 活動數據</h2>
       <p>MAGNE.AI Phone Gen1（MAG1）</p>
       <div class="card-grid">

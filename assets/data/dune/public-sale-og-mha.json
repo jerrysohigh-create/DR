@@ -1,0 +1,33 @@
+{
+  "query_id": 7924103,
+  "source": "dune",
+  "source_url": "https://dune.com/yolos3565/magne",
+  "metric_name": "Reported Public Sale OG Amount",
+  "unit": "MHA",
+  "last_result_at": "2026-07-13T15:21:30.282471Z",
+  "terms": {
+    "round": "Public Sale OG",
+    "price_level": "Lowest public-sale price",
+    "listing_reference": "Intended listing reference price not below this public-sale level, subject to applicable listing arrangements, exchange procedures, and compliance review.",
+    "lockup_after_listing_months": 6,
+    "vesting_after_lockup_months": 24,
+    "vesting_type": "continuous release"
+  },
+  "latest": {
+    "total_raised_mha": 13328547.463653,
+    "display_total_raised_mha": "13,328,547 MHA",
+    "participants": 1082,
+    "period": {
+      "start": "2025-10-29",
+      "end": "2026-03-14"
+    }
+  },
+  "rows": [
+    {"day": "2025-10-29", "raised_mha": 4461739.50529577},
+    {"day": "2025-11-10", "raised_mha": 449071.13999999996},
+    {"day": "2025-12-08", "raised_mha": 19773.333333333336},
+    {"day": "2025-12-24", "raised_mha": 1428278.2558848},
+    {"day": "2026-01-24", "raised_mha": 2361485.229138715},
+    {"day": "2026-03-14", "raised_mha": 4608200}
+  ]
+}
