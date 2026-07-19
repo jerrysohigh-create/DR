@@ -1,4 +1,5 @@
 import { config } from "./supabase-client.js";
+import { t } from "./i18n.js";
 const $ = (s) => document.querySelector(s),
   lines = (v) =>
     v
@@ -56,7 +57,7 @@ async function call(action, extra = {}) {
       body: JSON.stringify({ action, taskId: current.id, ...extra }),
     }),
     d = await r.json().catch(() => ({}));
-  if (!r.ok) throw Error(d.error || "Request failed");
+  if (!r.ok) throw Error(d.error || t("requestFailed"));
   return d;
 }
 function makeUtm() {
@@ -81,7 +82,7 @@ function makeUtm() {
 }
 function updateUtm() {
   const value = makeUtm();
-  $("#utmPreview").textContent = value || "Enter a valid HTTP(S) URL.";
+  $("#utmPreview").textContent = value || t("validUrl");
 }
 function choose() {
   current = ctx.getTasks().find((x) => x.id === $("#contentTask").value);
@@ -112,7 +113,7 @@ function choose() {
 }
 function refreshSelect() {
   const prior = $("#contentTask").value;
-  $("#contentTask").innerHTML = '<option value="">Select a task…</option>';
+  $("#contentTask").innerHTML = `<option value="">${t("selectTask")}</option>`;
   ctx.getTasks().forEach((t) => {
     const o = document.createElement("option");
     o.value = t.id;
@@ -131,14 +132,14 @@ function toggleCampaign() {
   updateUtm();
 }
 function countCopy() {
-  $("#copyCount").textContent = `${$("#taskCopy").value.length} characters`;
+  $("#copyCount").textContent = t("characters", { count: $("#taskCopy").value.length });
 }
 async function save() {
   try {
     $("#saveTask").disabled = true;
     const utm = makeUtm();
     if ($("#campaignEnabled").checked && !utm)
-      throw Error("Enter a valid campaign base URL.");
+      throw Error(t("validBase"));
     await call("save-task", {
       data: {
         title: $("#taskTitle").value,
@@ -154,7 +155,7 @@ async function save() {
         utmContent: $("#utmContent").value,
       },
     });
-    msg("#contentMsg", "Saved.");
+    msg("#contentMsg", t("saved"));
     await ctx.reload();
     refreshSelect();
   } catch (e) {
@@ -164,29 +165,30 @@ async function save() {
   }
 }
 async function validateFile(file) {
+  // File signature is verified before any upload; the user-facing text is localized.
   const rule = mimeRules[file.type];
-  if (!rule) throw Error("Unsupported file type.");
+  if (!rule) throw Error(t("unsupported"));
   if (file.size > rule.max)
     throw Error(
       file.type.startsWith("image/")
-        ? "Image exceeds 5 MB."
-        : "Video exceeds 18 MB.",
+        ? t("imageLarge")
+        : t("videoLarge"),
     );
   const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
   if (!rule.magic(bytes))
-    throw Error("File signature does not match its declared type.");
+    throw Error(t("signature"));
   return rule;
 }
 async function upload(file) {
   try {
-    if (!current) throw Error("Select a task first.");
+    if (!current) throw Error(t("selectFirst"));
     if (
       (current.assets || []).filter((x) => x.active).length >= 10 &&
       !replaceId
     )
-      throw Error("This task already has 10 active assets.");
+      throw Error(t("maxAssets"));
     await validateFile(file);
-    msg("#assetMsg", "Uploading…");
+    msg("#assetMsg", t("uploading"));
     const form = new FormData();
     form.set("action", "upload-asset");
     form.set("taskId", current.id);
@@ -205,9 +207,9 @@ async function upload(file) {
         },
       ),
       data = await response.json().catch(() => ({}));
-    if (!response.ok) throw Error(data.error || "Upload failed");
+    if (!response.ok) throw Error(data.error || t("uploadFailed"));
     replaceId = "";
-    msg("#assetMsg", "Asset uploaded.");
+    msg("#assetMsg", t("uploaded"));
     $("#assetFile").value = "";
     await ctx.reload();
     refreshSelect();
@@ -230,7 +232,7 @@ function renderAssets() {
     const name = document.createElement("strong");
     name.textContent = a.name;
     const meta = document.createElement("small");
-    meta.textContent = `${a.type} · ${a.active ? "active" : "inactive"}`;
+    meta.textContent = `${a.type} · ${a.active ? t("active") : t("inactive")}`;
     info.append(name, meta);
     const actions = document.createElement("div");
     actions.className = "mini-actions";
@@ -246,13 +248,13 @@ function renderAssets() {
       const activeIndex = active.findIndex((x) => x.id === a.id);
       button("↑", () => move(activeIndex, -1));
       button("↓", () => move(activeIndex, 1));
-      button("Replace", () => {
+      button(t("replace"), () => {
         replaceId = a.id;
         $("#assetFile").click();
       });
-      button("Deactivate", () => assetAction("deactivate-asset", a.id));
+      button(t("deactivate"), () => assetAction("deactivate-asset", a.id));
     }
-    button("Delete", () => assetAction("delete-asset", a.id));
+    button(t("delete"), () => assetAction("delete-asset", a.id));
     row.append(media, info, actions);
     box.append(row);
   });
@@ -267,7 +269,7 @@ async function move(index, delta) {
   refreshSelect();
 }
 async function assetAction(action, id) {
-  if (action === "delete-asset" && !confirm("Permanently delete this asset?"))
+  if (action === "delete-asset" && !confirm(t("deleteConfirm")))
     return;
   try {
     await call(action, { assetId: id });

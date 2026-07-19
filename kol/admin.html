@@ -11,60 +11,60 @@
     <main class="shell admin-shell">
       <header class="brand">
         <div class="logo">MAGNE.AI · KOL ADMIN</div>
-        <span class="demo">DEMO</span>
+        <div class="brand-tools"><span class="demo">DEMO</span><div class="language-switch" aria-label="Language"><button type="button" data-lang="en">EN</button><button type="button" data-lang="tc">繁中</button></div></div>
       </header>
       <section id="login" class="card login">
-        <h1>Admin sign in</h1>
-        <p class="muted">
+        <h1 data-i18n="signInTitle">Admin sign in</h1>
+        <p class="muted" data-i18n="signInNote">
           Production uses Supabase Auth. Demo access is local-only.
         </p>
         <label
-          >Email<input
+          ><span data-i18n="email">Email</span><input
             id="email"
             type="email"
             autocomplete="username"
             value="admin@example.com" /></label
         ><label
-          >Password<input
+          ><span data-i18n="password">Password</span><input
             id="password"
             type="password"
             autocomplete="current-password"
-            placeholder="Demo: demo-admin" /></label
-        ><button id="signIn">Sign in</button>
+            placeholder="Demo: demo-admin" data-i18n-placeholder="demoPassword" /></label
+        ><button id="signIn" data-i18n="signIn">Sign in</button>
         <p id="loginMsg" class="error" role="alert"></p>
       </section>
       <section id="setPassword" class="card login hidden">
-        <h1>Set your admin password</h1>
-        <p class="muted">
+        <h1 data-i18n="setPassword">Set your admin password</h1>
+        <p class="muted" data-i18n="choosePassword">
           Choose a password for this MAGNE.AI KOL Admin account.
         </p>
         <form id="passwordForm">
           <label
-            >New password<input
+            ><span data-i18n="newPassword">New password</span><input
               id="newPassword"
               type="password"
               autocomplete="new-password"
               minlength="8"
               required /></label
           ><label
-            >Confirm password<input
+            ><span data-i18n="confirmPassword">Confirm password</span><input
               id="confirmPassword"
               type="password"
               autocomplete="new-password"
               minlength="8"
               required /></label
-          ><button id="savePassword" type="submit">Set password</button>
+          ><button id="savePassword" type="submit" data-i18n="setPasswordButton">Set password</button>
         </form>
         <p id="passwordMsg" class="error" role="alert"></p>
       </section>
       <section id="authLinkError" class="card login hidden">
-        <h1>This link is invalid or expired</h1>
-        <p class="muted">
+        <h1 data-i18n="invalidLink">This link is invalid or expired</h1>
+        <p class="muted" data-i18n="recoveryHelp">
           Request a new Supabase password recovery email, then open only the
           newest link.
         </p>
         <button id="backToLogin" type="button" class="secondary">
-          Back to sign in
+          <span data-i18n="back">Back to sign in</span>
         </button>
       </section>
       <div id="dashboard" class="hidden">
@@ -72,82 +72,81 @@
         <section id="contentManager" class="card content-manager">
           <div class="section-head">
             <div>
-              <h2>Task content manager</h2>
-              <p class="muted">
+              <h2 data-i18n="manager">Task content manager</h2>
+              <p class="muted" data-i18n="managerNote">
                 Edit copy, schedule and campaign assets. Changes are audited.
               </p>
             </div>
             <button id="refreshContent" class="secondary" type="button">
-              Refresh
+              <span data-i18n="refresh">Refresh</span>
             </button>
           </div>
-          <label>Task<select id="contentTask"></select></label>
+          <label><span data-i18n="task">Task</span><select id="contentTask"></select></label>
           <div id="contentEditor" class="hidden">
             <div class="editor-grid">
-              <label>Title<input id="taskTitle" maxlength="160" /></label
+              <label><span data-i18n="title">Title</span><input id="taskTitle" maxlength="160" /></label
               ><label
-                >Status<select id="taskStatus">
-                  <option value="draft">Draft</option>
-                  <option>Ready to Publish</option>
-                  <option>Published</option>
-                  <option value="paused">Paused</option>
-                  <option value="archived">Archived</option>
+                ><span data-i18n="status">Status</span><select id="taskStatus">
+                  <option value="draft" data-i18n="draft">Draft</option>
+                  <option value="Ready to Publish" data-i18n="ready">Ready to Publish</option>
+                  <option value="Published" data-i18n="published">Published</option>
+                  <option value="paused" data-i18n="paused">Paused</option>
+                  <option value="archived" data-i18n="archived">Archived</option>
                 </select></label
               >
               <label class="wide"
-                >Primary angle<textarea
+                ><span data-i18n="angle">Primary angle</span><textarea
                   id="taskAngle"
                   rows="3"
                   maxlength="1000"
                 ></textarea>
               </label>
               <label class="wide"
-                >Approved post copy <span id="copyCount" class="muted"></span
+                ><span data-i18n="postCopy">Approved post copy</span> <span id="copyCount" class="muted"></span
                 ><textarea id="taskCopy" rows="8" maxlength="10000"></textarea>
               </label>
               <label
-                >Publish at<input id="taskPublishAt" type="datetime-local"
+                ><span data-i18n="publishAt">Publish at</span><input id="taskPublishAt" type="datetime-local"
               /></label>
               <label class="wide"
-                >Requirements (one per line)<textarea
+                ><span data-i18n="reqLines">Requirements (one per line)</span><textarea
                   id="taskRequirements"
                   rows="4"
                 ></textarea></label
               ><label class="wide"
-                >Prohibited claims (one per line)<textarea
+                ><span data-i18n="prohibited">Prohibited claims (one per line)</span><textarea
                   id="taskProhibited"
                   rows="3"
                 ></textarea>
               </label>
             </div>
             <label class="toggle"
-              ><input id="campaignEnabled" type="checkbox" /> Enable campaign
-              link</label
+              ><input id="campaignEnabled" type="checkbox" /> <span data-i18n="enableLink">Enable campaign link</span></label
             >
             <div id="campaignFields" class="editor-grid hidden">
               <label class="wide"
-                >Campaign base URL<input
+                ><span data-i18n="baseUrl">Campaign base URL</span><input
                   id="campaignBase"
                   type="url"
                   placeholder="https://magne.ai/" /></label
               ><label
-                >UTM campaign<input
+                ><span data-i18n="utmCampaign">UTM campaign</span><input
                   id="utmCampaign"
                   placeholder="wave-1" /></label
               ><label
-                >UTM content<input id="utmContent" placeholder="kol-handle"
+                ><span data-i18n="utmContent">UTM content</span><input id="utmContent" placeholder="kol-handle"
               /></label>
               <div class="wide campaign-preview">
-                <strong>Generated URL</strong><code id="utmPreview"></code>
+                <strong data-i18n="generated">Generated URL</strong><code id="utmPreview"></code>
               </div>
             </div>
             <div class="actions">
-              <button id="saveTask" type="button">Save content</button
+              <button id="saveTask" type="button" data-i18n="save">Save content</button
               ><span id="contentMsg" role="status"></span>
             </div>
             <hr />
-            <h3>Images and videos</h3>
-            <p class="muted">
+            <h3 data-i18n="media">Images and videos</h3>
+            <p class="muted" data-i18n="mediaNote">
               PNG/JPG/WebP ≤ 5 MB · MP4/WebM ≤ 18 MB · up to 10 active assets.
             </p>
             <input
@@ -161,15 +160,15 @@
         </section>
         <section class="card">
           <div class="toolbar">
-            <input id="search" placeholder="Search KOL" /><select id="wave">
-              <option value="">All waves</option>
+            <input id="search" placeholder="Search KOL" data-i18n-placeholder="search" /><select id="wave">
+              <option value="" data-i18n="allWaves">All waves</option>
               <option>Wave 1 · DEMO</option></select
             ><select id="filterStatus">
-              <option value="">All statuses</option>
-              <option>Ready to Publish</option>
-              <option>Published</option></select
-            ><button id="export">Export CSV</button
-            ><button id="signOut" class="secondary">Sign out</button>
+              <option value="" data-i18n="allStatuses">All statuses</option>
+              <option value="Ready to Publish" data-i18n="ready">Ready to Publish</option>
+              <option value="Published" data-i18n="published">Published</option></select
+            ><button id="export" data-i18n="export">Export CSV</button
+            ><button id="signOut" class="secondary" data-i18n="signOut">Sign out</button>
           </div>
         </section>
         <section class="card table-wrap">
@@ -177,17 +176,17 @@
             <thead>
               <tr>
                 <th>KOL</th>
-                <th>Wave</th>
-                <th>Publish at</th>
-                <th>Status</th>
-                <th>Post URL</th>
-                <th>24h Views</th>
-                <th>7d Views</th>
-                <th>Likes</th>
-                <th>Replies</th>
-                <th>Reposts</th>
-                <th>Source</th>
-                <th>Action</th>
+                <th data-i18n="wave">Wave</th>
+                <th data-i18n="publishAt">Publish at</th>
+                <th data-i18n="status">Status</th>
+                <th data-i18n="postUrl">Post URL</th>
+                <th data-i18n="views24">24h Views</th>
+                <th data-i18n="views7">7d Views</th>
+                <th data-i18n="likes">Likes</th>
+                <th data-i18n="replies">Replies</th>
+                <th data-i18n="reposts">Reposts</th>
+                <th data-i18n="source">Source</th>
+                <th data-i18n="action">Action</th>
               </tr>
             </thead>
             <tbody id="rows"></tbody>
@@ -195,10 +194,11 @@
         </section>
       </div>
       <dialog id="detail">
-        <button id="close" class="secondary">Close</button>
+        <button id="close" class="secondary" data-i18n="close">Close</button>
         <div id="detailBody"></div>
       </dialog>
     </main>
+    <script type="module">import { setupLanguageSwitcher } from "./js/i18n.js"; setupLanguageSwitcher();</script>
     <script src="js/config-loader.js"></script>
     <script type="module" src="js/admin.js"></script>
   </body>

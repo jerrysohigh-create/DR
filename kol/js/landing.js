@@ -5,13 +5,13 @@ export const TEST_KOLS = Object.freeze([
 ]);
 export function validateLandingInput(slug, token) {
   if (!TEST_KOLS.some((k) => k.slug === slug))
-    return "Select your assigned KOL account.";
-  if (!String(token || "").trim()) return "Enter your private task token.";
+    return t("selectError");
+  if (!String(token || "").trim()) return t("tokenError");
   return "";
 }
 export function taskTokenKey(slug) {
   if (!TEST_KOLS.some((k) => k.slug === slug))
-    throw new Error("Select your assigned KOL account.");
+    throw new Error(t("selectError"));
   return `kol_token_${slug}`;
 }
 export function storeTaskToken(storage, slug, token) {
@@ -48,3 +48,4 @@ export function showLanding() {
     }
   });
 }
+import { t } from "./i18n.js";

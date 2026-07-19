@@ -32,6 +32,11 @@ body {
   justify-content: space-between;
   margin: 10px 0 24px;
 }
+.brand-tools,.language-switch { display:flex; align-items:center; gap:8px; }
+.language-switch { border:1px solid var(--line); border-radius:9px; padding:2px; }
+.language-switch button { min-height:34px; padding:5px 9px; background:transparent; color:var(--muted); }
+.language-switch button[aria-pressed="true"] { background:var(--blue); color:#00101d; }
+@media (max-width:375px) { .shell { padding-inline:12px; } .logo { font-size:14px; letter-spacing:.08em; } .brand-tools { gap:5px; } .demo { display:none; } .language-switch button { padding-inline:8px; } }
 .logo {
   font-weight: 900;
   letter-spacing: 0.14em;

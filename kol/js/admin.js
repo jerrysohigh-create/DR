@@ -8,7 +8,10 @@ import {
   completePasswordSetup,
 } from "./admin-auth.js";
 import { setupContentManager } from "./content-manager.js";
+import { t } from "./i18n.js";
 const $ = (s) => document.querySelector(s);
+const safeError = (value, fallback = "unknownError") => t("errorPrefix", { detail: String(value || t(fallback)) });
+const statusLabel = (value) => ({ draft: t("draft"), "Ready to Publish": t("ready"), Published: t("published"), paused: t("paused"), archived: t("archived") }[value] || value);
 let tasks = [],
   supabase,
   session,
@@ -81,7 +84,7 @@ function normalize(rows) {
 async function signIn() {
   if (isDemo) {
     if ($("#password").value !== "demo-admin")
-      return ($("#loginMsg").textContent = "Invalid demo credentials.");
+      return ($("#loginMsg").textContent = t("invalidCredentials"));
     sessionStorage.setItem("kol_demo_admin", "1");
     return loadDemo();
   }
@@ -89,7 +92,7 @@ async function signIn() {
     email: $("#email").value.trim(),
     password: $("#password").value,
   });
-  if (result.error) return ($("#loginMsg").textContent = result.error.message);
+  if (result.error) return ($("#loginMsg").textContent = safeError(result.error.message));
   session = result.data.session;
   await loadProduction();
 }
@@ -152,11 +155,11 @@ async function savePassword(event) {
     cleanUrl: () => history.replaceState({}, "", location.pathname),
   });
   button.disabled = false;
-  if (result.error) return (msg.textContent = result.error);
+  if (result.error) return (msg.textContent = safeError(result.error));
   settingPassword = false;
   showLogin();
   $("#loginMsg").textContent =
-    "Password set successfully. Sign in with your email and new password.";
+    t("passwordSuccess");
   $("#email").value = result.email || $("#email").value;
   $("#password").value = "";
   $("#password").focus();
@@ -187,7 +190,7 @@ async function loadProduction() {
       contentReady = true;
     }
   } catch (e) {
-    $("#loginMsg").textContent = e.message;
+    $("#loginMsg").textContent = safeError(e.message);
     await supabase.auth.signOut();
   }
 }
@@ -199,7 +202,7 @@ async function fetchProduction() {
       },
     }),
     d = await r.json();
-  if (!r.ok) throw Error(d.error || "Admin access denied");
+  if (!r.ok) throw Error(d.error || t("adminDenied"));
   tasks = normalize(d.rows);
 }
 function show() {
@@ -242,22 +245,22 @@ function render() {
         t.metrics.history?.some((x) => x.status === "manual_review"),
     ).length;
   const values = [
-    ["Total KOL", tasks.length],
-    ["Ready", tasks.length - published],
-    ["Published", published],
-    ["Overdue", overdue],
+    [t("totalKol"), tasks.length],
+    [t("readyStat"), tasks.length - published],
+    [t("published"), published],
+    [t("overdue"), overdue],
     [
-      "24h complete",
+      t("complete24"),
       `${tasks.length ? Math.round((done("h24") / tasks.length) * 100) : 0}%`,
     ],
     [
-      "7d complete",
+      t("complete7"),
       `${tasks.length ? Math.round((done("d7") / tasks.length) * 100) : 0}%`,
     ],
-    ["Total Views", views],
-    ["Total engagement", eng],
-    ["UTM clicks", "—"],
-    ["Manual review", review],
+    [t("totalViews"), views],
+    [t("engagement"), eng],
+    [t("clicks"), "—"],
+    [t("manualReview"), review],
   ];
   $("#stats").innerHTML = values
     .map(
@@ -275,7 +278,7 @@ function render() {
       t.handle,
       t.wave,
       new Date(t.publishAt).toLocaleString(),
-      t.status,
+      statusLabel(t.status),
       t.submission?.url || "—",
       t.metrics.h24 ?? "—",
       t.metrics.d7 ?? "—",
@@ -290,7 +293,7 @@ function render() {
     });
     const td = document.createElement("td"),
       b = document.createElement("button");
-    b.textContent = "View";
+    b.textContent = t("view");
     b.className = "secondary";
     b.onclick = () => details(t);
     td.append(b);
@@ -369,3 +372,4 @@ $("#export").onclick = () => {
   URL.revokeObjectURL(a.href);
 };
 init();
+document.addEventListener("kol:language", () => location.reload());

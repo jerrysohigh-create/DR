@@ -11,14 +11,14 @@
     <main class="shell">
       <header class="brand">
         <div class="logo">MAGNE.AI</div>
-        <span class="demo">TEST</span>
+        <div class="brand-tools"><span class="demo">TEST</span><div class="language-switch" aria-label="Language"><button type="button" data-lang="en">EN</button><button type="button" data-lang="tc">繁中</button></div></div>
       </header>
-      <div id="state" class="card">Loading your campaign task…</div>
+      <div id="state" class="card" data-i18n="loading">Loading your campaign task…</div>
       <section id="landing" class="hidden" aria-labelledby="landingTitle">
         <div class="card landing-intro">
-          <div class="eyebrow">Secure test portal</div>
-          <h1 id="landingTitle">Open your KOL task</h1>
-          <p>
+          <div class="eyebrow" data-i18n="secure">Secure test portal</div>
+          <h1 id="landingTitle" data-i18n="openTitle">Open your KOL task</h1>
+          <p data-i18n="openIntro">
             Select your assigned X account and enter the private token you
             received. The token stays in this browser and is never shown on this
             page.
@@ -26,7 +26,7 @@
         </div>
         <form id="taskAccess" class="card">
           <fieldset>
-            <legend>1. Select a test KOL</legend>
+            <legend data-i18n="selectKol">1. Select a test KOL</legend>
             <div class="kol-options">
               <label class="kol-option"
                 ><input type="radio" name="task" value="crypto-dragon" /><span
@@ -49,7 +49,7 @@
             </div>
           </fieldset>
           <label for="accessToken"
-            ><strong>2. Enter your private task token</strong></label
+            ><strong data-i18n="enterToken">2. Enter your private task token</strong></label
           >
           <input
             id="accessToken"
@@ -57,26 +57,26 @@
             type="password"
             autocomplete="off"
             spellcheck="false"
-            placeholder="Paste token here"
+            placeholder="Paste token here" data-i18n-placeholder="tokenPlaceholder"
           />
-          <p class="muted token-note">
+          <p class="muted token-note" data-i18n="tokenNote">
             Do not share this token or send it in screenshots.
           </p>
-          <button id="openTask" type="submit">Open Task</button>
+          <button id="openTask" type="submit" data-i18n="openTask">Open Task</button>
           <p id="landingMsg" class="error" role="alert" aria-live="polite"></p>
         </form>
         <section class="card">
-          <h2>How it works</h2>
+          <h2 data-i18n="how">How it works</h2>
           <ol>
-            <li>Select the X account assigned to you.</li>
-            <li>Paste the private token sent by the campaign team.</li>
-            <li>
+            <li data-i18n="step1">Select the X account assigned to you.</li>
+            <li data-i18n="step2">Paste the private token sent by the campaign team.</li>
+            <li data-i18n="step3">
               Open the task, copy the approved post, download assets and submit
               your published X URL.
             </li>
           </ol>
           <p class="muted">
-            Need campaign administration? <a href="admin.html">Open Admin</a>.
+            <span data-i18n="adminNeed">Need campaign administration? </span><a href="admin.html" data-i18n="adminOpen">Open Admin</a>.
           </p>
         </section>
       </section>
@@ -90,67 +90,68 @@
           </div>
         </section>
         <section class="card">
-          <h2>Publishing schedule</h2>
+          <h2 data-i18n="schedule">Publishing schedule</h2>
           <p id="publish"></p>
           <p class="muted" id="local"></p>
           <p id="countdown"></p>
-          <button id="calendar" class="secondary">Add to Calendar</button>
+          <button id="calendar" class="secondary" data-i18n="calendar">Add to Calendar</button>
         </section>
         <section class="card">
-          <h2>Approved Post Copy</h2>
+          <h2 data-i18n="approved">Approved Post Copy</h2>
           <div id="copy" class="copy"></div>
-          <div class="actions"><button id="copyPost">Copy Post</button></div>
+          <div class="actions"><button id="copyPost" data-i18n="copyPost">Copy Post</button></div>
           <p id="copyMsg" class="success"></p>
         </section>
         <section id="campaignCard" class="card">
-          <h2>Your campaign link</h2>
+          <h2 data-i18n="campaign">Your campaign link</h2>
           <div id="utm" class="copy campaign-url"></div>
           <div class="actions">
-            <button id="copyLink">Copy Link</button
+            <button id="copyLink" data-i18n="copyLink">Copy Link</button
             ><a
               id="openLink"
               class="button secondary"
               target="_blank"
               rel="noopener"
-              >Open Landing Page</a
+              data-i18n="openPage">Open Landing Page</a
             >
           </div>
         </section>
         <section id="assetsCard" class="card">
-          <h2>Assets</h2>
+          <h2 data-i18n="assets">Assets</h2>
           <div id="assets"></div>
-          <button id="downloadAll" class="secondary">Download All</button>
+          <button id="downloadAll" class="secondary" data-i18n="downloadAll">Download All</button>
         </section>
         <section class="card">
-          <h2>Publishing requirements</h2>
+          <h2 data-i18n="requirements">Publishing requirements</h2>
           <ul id="requirements"></ul>
           <div id="prohibited" class="notice"></div>
         </section>
         <section class="card">
-          <h2>Submit your published post</h2>
-          <label for="postUrl">Paste your published X post URL</label
+          <h2 data-i18n="submitTitle">Submit your published post</h2>
+          <label for="postUrl" data-i18n="postLabel">Paste your published X post URL</label
           ><input
             id="postUrl"
             inputmode="url"
-            placeholder="https://x.com/username/status/123…"
+            placeholder="https://x.com/username/status/123…" data-i18n-placeholder="postUrlPlaceholder"
           />
           <div class="actions">
-            <button id="submit">Submit Published Post</button>
+            <button id="submit" data-i18n="submit">Submit Published Post</button>
           </div>
           <p id="submitMsg" aria-live="polite"></p>
           <div id="receipt" class="hidden">
-            <h2>Submission Received</h2>
-            <p>
+            <h2 data-i18n="received">Submission Received</h2>
+            <p data-i18n="monitored">
               Your post is now being monitored.<br />No screenshots are
               required.
             </p>
             <div id="receiptData"></div>
-            <p class="muted">Data status: Waiting for public metrics</p>
+            <p class="muted" data-i18n="waiting">Data status: Waiting for public metrics</p>
           </div>
         </section>
       </div>
-      <footer>magne.ai · <a href="privacy.html">Privacy</a></footer>
+      <footer>magne.ai · <a href="privacy.html" data-i18n="privacy">Privacy</a></footer>
     </main>
+    <script type="module">import { setupLanguageSwitcher } from "./js/i18n.js"; setupLanguageSwitcher();</script>
     <script src="js/config-loader.js"></script>
     <script type="module" src="js/task.js"></script>
   </body>

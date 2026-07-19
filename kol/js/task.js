@@ -1,17 +1,20 @@
 import { parseXPostUrl, sameHandle } from "./validation.js";
 import { api, isDemo } from "./supabase-client.js";
 import { showLanding } from "./landing.js";
+import { getLanguage, t } from "./i18n.js";
 const $ = (s) => document.querySelector(s);
+document.addEventListener("kol:language", () => location.reload());
 let task,
   sessionToken = "";
 function fail(m) {
   ($("#state").innerHTML =
-    '<strong>Task unavailable</strong><p class="error"></p>'),
+    `<strong>${t("unavailable")}</strong><p class="error"></p>`),
     ($("#state").querySelector("p").textContent = m);
 }
+const safeError = (value) => t("errorPrefix", { detail: String(value || t("unknownError")) });
 async function copy(v, msg) {
   await navigator.clipboard.writeText(v),
-    ($(msg).textContent = "Copied."),
+    ($(msg).textContent = t("copied")),
     setTimeout(() => ($(msg).textContent = ""), 1800);
 }
 ($("#copyPost").onclick = () => copy(task.copy, "#copyMsg")),
@@ -41,14 +44,14 @@ async function copy(v, msg) {
       parsed = parseXPostUrl($("#postUrl").value);
     if (((m.className = "error"), !parsed))
       return (m.textContent =
-        "Enter a valid x.com or twitter.com post URL containing /status/ and a numeric Post ID.");
+        t("invalidPost"));
     if (!sameHandle(parsed.username, task.handle))
-      return (m.textContent = `This post belongs to @${parsed.username}, not ${task.handle}.`);
+      return (m.textContent = t("wrongHandle", { user: parsed.username, handle: task.handle }));
     const key = `kol_submission_${task.slug}`;
     if (localStorage.getItem(key))
       return (m.textContent =
-        "A post has already been submitted for this task.");
-    if (confirm(`Submit ${parsed.url}? This cannot be changed.`))
+        t("submitted"));
+    if (confirm(t("confirmSubmit", { url: parsed.url })))
       try {
         const result = isDemo
           ? { submittedAt: new Date().toISOString() }
@@ -68,7 +71,7 @@ async function copy(v, msg) {
           ($("#receiptData").textContent =
             `${parsed.url} · ${new Date(result.submittedAt || Date.now()).toLocaleString()}`);
       } catch (e) {
-        m.textContent = e.message;
+        m.textContent = safeError(e.message);
       }
   }),
   (async function () {
@@ -89,7 +92,7 @@ async function copy(v, msg) {
         )),
       !slug || !sessionToken)
     )
-      return fail("This task link is incomplete or invalid.");
+      return fail(t("incomplete"));
     try {
       if (isDemo) {
         const d = await fetch("assets/mock/demo-task.json").then((r) =>
@@ -103,7 +106,7 @@ async function copy(v, msg) {
         )
           throw Error("Invalid, expired or revoked demo link.");
       } else task = await api.getTask(slug, sessionToken);
-      !(function () {
+      !(function renderTask() {
         ($(".demo").textContent = "DEMO"),
           $("#state").classList.add("hidden"),
           $("#app").classList.remove("hidden"),
@@ -115,16 +118,17 @@ async function copy(v, msg) {
           ($("#openLink").href = task.utm || ""),
           $("#campaignCard").classList.toggle("hidden", !task.utm);
         const d = new Date(task.publishAt);
+        const locale = getLanguage() === "tc" ? "zh-Hant-TW" : "en-SG";
         ($("#publish").textContent =
-          `${new Intl.DateTimeFormat("en-SG", { dateStyle: "full", timeStyle: "short", timeZone: "Asia/Singapore" }).format(d)} SGT`),
+          `${new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short", timeZone: "Asia/Singapore" }).format(d)} SGT`),
           ($("#local").textContent =
-            `Your local time: ${new Intl.DateTimeFormat(void 0, { dateStyle: "full", timeStyle: "short" }).format(d)}`),
+            t("localTime", { value: new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(d) })),
           setInterval(() => {
             const n = d - Date.now();
             $("#countdown").textContent =
               n > 0
-                ? `Publishes in ${Math.floor(n / 864e5)}d ${Math.floor((n % 864e5) / 36e5)}h ${Math.floor((n % 36e5) / 6e4)}m`
-                : "Publishing window is open";
+                ? t("publishes", { d: Math.floor(n / 864e5), h: Math.floor((n % 864e5) / 36e5), m: Math.floor((n % 36e5) / 6e4) })
+                : t("windowOpen");
           }, 1e3),
           task.requirements.slice(0, 3).forEach((x) => {
             const li = document.createElement("li");
@@ -147,13 +151,13 @@ async function copy(v, msg) {
               (dl.className = "button secondary"),
                 (dl.href = a.url),
                 (dl.download = ""),
-                (dl.textContent = "Download"),
+                (dl.textContent = t("download")),
                 row.append(media, name, dl),
                 $("#assets").append(row);
             });
           })();
       })();
     } catch (e) {
-      fail(e.message);
+      fail(safeError(e.message));
     }
   })();
