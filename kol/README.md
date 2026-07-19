@@ -2,6 +2,8 @@
 
 Static, mobile-first task portal intended for `https://jerrysohigh-create.github.io/DR/kol/`. It does not alter the DR homepage. Demo records and placeholder visuals are visibly marked **DEMO**.
 
+The base `/kol/` URL is a secure test-task entry page. A tester selects one of the three test KOL accounts and enters the private token supplied separately; the token is handed to the task through slug-scoped session storage and is never placed in the generated URL. No raw token is embedded in the page or repository. Existing complete `?task=<slug>&token=<token>` links remain compatible and remove their token from the address bar immediately.
+
 ## Local preview
 
 From the repository root run `python3 -m http.server 8000`, then open:
