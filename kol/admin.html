@@ -1,1 +1,205 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>MAGNE.AI KOL Admin</title><link rel="stylesheet" href="css/admin.css"></head><body><main class="shell admin-shell"><header class="brand"><div class="logo">MAGNE.AI · KOL ADMIN</div><span class="demo">DEMO</span></header><section id="login" class="card login"><h1>Admin sign in</h1><p class="muted">Production uses Supabase Auth. Demo access is local-only.</p><label>Email<input id="email" type="email" autocomplete="username" value="admin@example.com"></label><label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Demo: demo-admin"></label><button id="signIn">Sign in</button><p id="loginMsg" class="error" role="alert"></p></section><section id="setPassword" class="card login hidden"><h1>Set your admin password</h1><p class="muted">Choose a password for this MAGNE.AI KOL Admin account.</p><form id="passwordForm"><label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></label><label>Confirm password<input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label><button id="savePassword" type="submit">Set password</button></form><p id="passwordMsg" class="error" role="alert"></p></section><section id="authLinkError" class="card login hidden"><h1>This link is invalid or expired</h1><p class="muted">Request a new Supabase password recovery email, then open only the newest link.</p><button id="backToLogin" type="button" class="secondary">Back to sign in</button></section><div id="dashboard" class="hidden"><section id="stats" class="stats"></section><section class="card"><div class="toolbar"><input id="search" placeholder="Search KOL"><select id="wave"><option value="">All waves</option><option>Wave 1 · DEMO</option></select><select id="filterStatus"><option value="">All statuses</option><option>Ready to Publish</option><option>Published</option></select><button id="export">Export CSV</button><button id="signOut" class="secondary">Sign out</button></div></section><section class="card table-wrap"><table><thead><tr><th>KOL</th><th>Wave</th><th>Publish at</th><th>Status</th><th>Post URL</th><th>24h Views</th><th>7d Views</th><th>Likes</th><th>Replies</th><th>Reposts</th><th>Source</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></section></div><dialog id="detail"><button id="close" class="secondary">Close</button><div id="detailBody"></div></dialog></main><script src="js/config-loader.js"></script><script type="module" src="js/admin.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>MAGNE.AI KOL Admin</title>
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <main class="shell admin-shell">
+      <header class="brand">
+        <div class="logo">MAGNE.AI · KOL ADMIN</div>
+        <span class="demo">DEMO</span>
+      </header>
+      <section id="login" class="card login">
+        <h1>Admin sign in</h1>
+        <p class="muted">
+          Production uses Supabase Auth. Demo access is local-only.
+        </p>
+        <label
+          >Email<input
+            id="email"
+            type="email"
+            autocomplete="username"
+            value="admin@example.com" /></label
+        ><label
+          >Password<input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Demo: demo-admin" /></label
+        ><button id="signIn">Sign in</button>
+        <p id="loginMsg" class="error" role="alert"></p>
+      </section>
+      <section id="setPassword" class="card login hidden">
+        <h1>Set your admin password</h1>
+        <p class="muted">
+          Choose a password for this MAGNE.AI KOL Admin account.
+        </p>
+        <form id="passwordForm">
+          <label
+            >New password<input
+              id="newPassword"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              required /></label
+          ><label
+            >Confirm password<input
+              id="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              required /></label
+          ><button id="savePassword" type="submit">Set password</button>
+        </form>
+        <p id="passwordMsg" class="error" role="alert"></p>
+      </section>
+      <section id="authLinkError" class="card login hidden">
+        <h1>This link is invalid or expired</h1>
+        <p class="muted">
+          Request a new Supabase password recovery email, then open only the
+          newest link.
+        </p>
+        <button id="backToLogin" type="button" class="secondary">
+          Back to sign in
+        </button>
+      </section>
+      <div id="dashboard" class="hidden">
+        <section id="stats" class="stats"></section>
+        <section id="contentManager" class="card content-manager">
+          <div class="section-head">
+            <div>
+              <h2>Task content manager</h2>
+              <p class="muted">
+                Edit copy, schedule and campaign assets. Changes are audited.
+              </p>
+            </div>
+            <button id="refreshContent" class="secondary" type="button">
+              Refresh
+            </button>
+          </div>
+          <label>Task<select id="contentTask"></select></label>
+          <div id="contentEditor" class="hidden">
+            <div class="editor-grid">
+              <label>Title<input id="taskTitle" maxlength="160" /></label
+              ><label
+                >Status<select id="taskStatus">
+                  <option value="draft">Draft</option>
+                  <option>Ready to Publish</option>
+                  <option>Published</option>
+                  <option value="paused">Paused</option>
+                  <option value="archived">Archived</option>
+                </select></label
+              >
+              <label class="wide"
+                >Primary angle<textarea
+                  id="taskAngle"
+                  rows="3"
+                  maxlength="1000"
+                ></textarea>
+              </label>
+              <label class="wide"
+                >Approved post copy <span id="copyCount" class="muted"></span
+                ><textarea id="taskCopy" rows="8" maxlength="10000"></textarea>
+              </label>
+              <label
+                >Publish at<input id="taskPublishAt" type="datetime-local"
+              /></label>
+              <label class="wide"
+                >Requirements (one per line)<textarea
+                  id="taskRequirements"
+                  rows="4"
+                ></textarea></label
+              ><label class="wide"
+                >Prohibited claims (one per line)<textarea
+                  id="taskProhibited"
+                  rows="3"
+                ></textarea>
+              </label>
+            </div>
+            <label class="toggle"
+              ><input id="campaignEnabled" type="checkbox" /> Enable campaign
+              link</label
+            >
+            <div id="campaignFields" class="editor-grid hidden">
+              <label class="wide"
+                >Campaign base URL<input
+                  id="campaignBase"
+                  type="url"
+                  placeholder="https://magne.ai/" /></label
+              ><label
+                >UTM campaign<input
+                  id="utmCampaign"
+                  placeholder="wave-1" /></label
+              ><label
+                >UTM content<input id="utmContent" placeholder="kol-handle"
+              /></label>
+              <div class="wide campaign-preview">
+                <strong>Generated URL</strong><code id="utmPreview"></code>
+              </div>
+            </div>
+            <div class="actions">
+              <button id="saveTask" type="button">Save content</button
+              ><span id="contentMsg" role="status"></span>
+            </div>
+            <hr />
+            <h3>Images and videos</h3>
+            <p class="muted">
+              PNG/JPG/WebP ≤ 5 MB · MP4/WebM ≤ 18 MB · up to 10 active assets.
+            </p>
+            <input
+              id="assetFile"
+              type="file"
+              accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"
+            />
+            <div id="assetPreview" class="asset-manager"></div>
+            <p id="assetMsg" role="status"></p>
+          </div>
+        </section>
+        <section class="card">
+          <div class="toolbar">
+            <input id="search" placeholder="Search KOL" /><select id="wave">
+              <option value="">All waves</option>
+              <option>Wave 1 · DEMO</option></select
+            ><select id="filterStatus">
+              <option value="">All statuses</option>
+              <option>Ready to Publish</option>
+              <option>Published</option></select
+            ><button id="export">Export CSV</button
+            ><button id="signOut" class="secondary">Sign out</button>
+          </div>
+        </section>
+        <section class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>KOL</th>
+                <th>Wave</th>
+                <th>Publish at</th>
+                <th>Status</th>
+                <th>Post URL</th>
+                <th>24h Views</th>
+                <th>7d Views</th>
+                <th>Likes</th>
+                <th>Replies</th>
+                <th>Reposts</th>
+                <th>Source</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </section>
+      </div>
+      <dialog id="detail">
+        <button id="close" class="secondary">Close</button>
+        <div id="detailBody"></div>
+      </dialog>
+    </main>
+    <script src="js/config-loader.js"></script>
+    <script type="module" src="js/admin.js"></script>
+  </body>
+</html>

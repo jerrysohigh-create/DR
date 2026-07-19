@@ -30,3 +30,9 @@ Run non-secret source checks from the repository root with `node kol/tests/p2-in
 All four functions were deployed to the temporary Supabase test project and live behavior checks passed: token access 200/403, submission 400/403/201/409, unauthenticated Admin 401, and Mock 24h/7d collection HTTP 200. Stored Mock data preserved 24h `bookmarks` and 7d `quotes` as `NULL`; Apify was not called. `kol/js/config.runtime.js` is therefore set to `USE_DEMO_DATA:false` for this test project. The Admin invitation is waiting for email verification before authenticated Admin testing can complete.
 
 Raw task tokens and the cron secret remain outside the repository and are intentionally omitted from all reports.
+
+## Admin content manager
+
+Apply `migrations/002_kol_content_manager.sql`, then deploy `admin-content`, `admin-export`, and `get-task`. The migration creates the private `kol-assets` bucket. Only active `admin` users may mutate content through the service-role Edge Function; no authenticated PostgREST or Storage write policy exists. Admin previews and KOL downloads use short-lived signed URLs. Images are limited to 5 MB and videos to 18 MB, leaving multipart overhead below hosted Edge request limits; each task may have ten active assets.
+
+To rotate a compromised task token, run `node supabase/scripts/rotate-task-token.mjs` with `KOL_SUPABASE_URL`, `KOL_TEST_SECRET_KEY`, `KOL_TASK_SLUG`, and an absolute `KOL_TOKEN_OUTPUT` outside this repository. It inserts the new hash before revoking prior active hashes and writes the only raw copy to a new mode-0600 file. Never paste that file into chat.
