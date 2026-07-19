@@ -1,0 +1,13 @@
+project_id = "olgvhiwkcjkbqwawgiaq"
+
+[functions.get-task]
+verify_jwt = false
+
+[functions.submit-post]
+verify_jwt = false
+
+[functions.collect-metrics]
+verify_jwt = false
+
+[functions.admin-export]
+verify_jwt = true

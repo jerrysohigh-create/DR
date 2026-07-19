@@ -1,2 +1,5 @@
-// Deployments may provide ignored js/config.js. Demo safely falls back to the committed example.
-window.KOL_CONFIG_READY=new Promise(resolve=>{const s=document.createElement('script');s.src='js/config.js';s.onload=()=>resolve(window.KOL_CONFIG);s.onerror=()=>{const f=document.createElement('script');f.src='js/config.example.js';f.onload=()=>resolve(window.KOL_CONFIG);document.head.append(f)};document.head.append(s)});
+// A local ignored config wins; Pages uses the committed publishable runtime config; Demo is the safe final fallback.
+window.KOL_CONFIG_READY=new Promise(resolve=>{
+  const load=(src,next)=>{const script=document.createElement('script');script.src=src;script.onload=()=>resolve(window.KOL_CONFIG);script.onerror=next;document.head.append(script)};
+  load('js/config.js',()=>load('js/config.runtime.js',()=>load('js/config.example.js',()=>resolve({USE_DEMO_DATA:true}))));
+});
