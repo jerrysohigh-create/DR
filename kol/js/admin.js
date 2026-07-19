@@ -269,23 +269,24 @@ function render() {
     )
     .join("");
   $("#rows").innerHTML = "";
-  shown.forEach((t) => {
+  shown.forEach((task) => {
     const tr = document.createElement("tr");
-    if (!t.submission && new Date(t.publishAt) < now) tr.className = "overdue";
-    if (review && t.metrics.history?.some((x) => x.status === "manual_review"))
+    if (!task.submission && new Date(task.publishAt) < now)
+      tr.className = "overdue";
+    if (review && task.metrics.history?.some((x) => x.status === "manual_review"))
       tr.className = "review";
     [
-      t.handle,
-      t.wave,
-      new Date(t.publishAt).toLocaleString(),
-      statusLabel(t.status),
-      t.submission?.url || "—",
-      t.metrics.h24 ?? "—",
-      t.metrics.d7 ?? "—",
-      t.metrics.likes ?? "—",
-      t.metrics.replies ?? "—",
-      t.metrics.reposts ?? "—",
-      t.metrics.source,
+      task.handle,
+      task.wave,
+      new Date(task.publishAt).toLocaleString(),
+      statusLabel(task.status),
+      task.submission?.url || "—",
+      task.metrics.h24 ?? "—",
+      task.metrics.d7 ?? "—",
+      task.metrics.likes ?? "—",
+      task.metrics.replies ?? "—",
+      task.metrics.reposts ?? "—",
+      task.metrics.source,
     ].forEach((v) => {
       const td = document.createElement("td");
       td.textContent = v;
@@ -295,7 +296,7 @@ function render() {
       b = document.createElement("button");
     b.textContent = t("view");
     b.className = "secondary";
-    b.onclick = () => details(t);
+    b.onclick = () => details(task);
     td.append(b);
     tr.append(td);
     $("#rows").append(tr);
