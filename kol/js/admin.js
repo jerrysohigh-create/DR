@@ -9,6 +9,7 @@ import {
 } from "./admin-auth.js";
 import { setupContentManager } from "./content-manager.js";
 import { t } from "./i18n.js";
+import { displayMetric, metricMode, officialMetricValue, resolveMetricWindows } from "./admin-metrics.js";
 const $ = (s) => document.querySelector(s);
 const safeError = (value, fallback = "unknownError") => t("errorPrefix", { detail: String(value || t(fallback)) });
 const statusLabel = (value) => ({ draft: t("draft"), "Ready to Publish": t("ready"), Published: t("published"), paused: t("paused"), archived: t("archived") }[value] || value);
@@ -24,10 +25,7 @@ function normalize(rows) {
         ? t.post_submissions[0]
         : t.post_submissions,
       metrics = sub?.metric_snapshots || [],
-      snap = (kind) =>
-        metrics
-          .filter((m) => m.snapshot_type === kind)
-          .sort((a, b) => new Date(b.captured_at) - new Date(a.captured_at))[0];
+      windows = resolveMetricWindows(metrics);
     return {
       id: t.id,
       slug: t.slug || t.kol_profiles?.slug || t.id,
@@ -60,15 +58,29 @@ function normalize(rows) {
         t.submission ||
         (sub && { url: sub.submitted_url, submittedAt: sub.submitted_at }),
       metrics: metrics.length
-        ? {
-            h24: snap("24h")?.views ?? null,
-            d7: snap("7d")?.views ?? null,
-            likes: (snap("7d") || snap("24h"))?.likes ?? null,
-            replies: (snap("7d") || snap("24h"))?.replies ?? null,
-            reposts: (snap("7d") || snap("24h"))?.reposts ?? null,
-            source: (snap("7d") || snap("24h"))?.source ?? "Waiting",
+        ? (() => {
+          const effective = windows.d7 || windows.h24;
+          const source = effective?.source ?? "Waiting";
+          const failed = {
+            h24: windows.h24Failed,
+            d7: windows.d7Failed,
+            likes: !effective && (windows.h24Failed || windows.d7Failed),
+            replies: !effective && (windows.h24Failed || windows.d7Failed),
+            reposts: !effective && (windows.h24Failed || windows.d7Failed),
+          };
+          return {
+            h24: windows.h24?.views ?? null,
+            d7: windows.d7?.views ?? null,
+            likes: effective?.likes ?? null,
+            replies: effective?.replies ?? null,
+            reposts: effective?.reposts ?? null,
+            source,
+            mode: metricMode(metrics, source),
+            providerFailed: Object.values(failed).some(Boolean),
+            failed,
             history: metrics,
-          }
+          };
+        })()
         : t.metrics || {
             h24: null,
             d7: null,
@@ -76,6 +88,9 @@ function normalize(rows) {
             replies: null,
             reposts: null,
             source: sub ? "Waiting" : "—",
+            mode: "waiting",
+            providerFailed: false,
+            failed: {},
             history: [],
           },
     };
@@ -230,7 +245,7 @@ function render() {
       (t) => !t.submission && new Date(t.publishAt) < now,
     ).length,
     done = (k) => tasks.filter((t) => t.metrics[k] != null).length,
-    views = tasks.reduce((n, t) => n + (t.metrics.d7 ?? t.metrics.h24 ?? 0), 0),
+    views = tasks.reduce((n, task) => n + (officialMetricValue(task.metrics, "d7") ?? officialMetricValue(task.metrics, "h24") ?? 0), 0),
     eng = tasks.reduce(
       (n, t) =>
         n +
@@ -241,8 +256,7 @@ function render() {
     ),
     review = tasks.filter(
       (t) =>
-        t.metrics.source === "none" ||
-        t.metrics.history?.some((x) => x.status === "manual_review"),
+        t.metrics.source === "none" || t.metrics.providerFailed,
     ).length;
   const values = [
     [t("totalKol"), tasks.length],
@@ -273,7 +287,7 @@ function render() {
     const tr = document.createElement("tr");
     if (!task.submission && new Date(task.publishAt) < now)
       tr.className = "overdue";
-    if (review && task.metrics.history?.some((x) => x.status === "manual_review"))
+    if (task.metrics.providerFailed)
       tr.className = "review";
     [
       task.handle,
@@ -281,12 +295,12 @@ function render() {
       new Date(task.publishAt).toLocaleString(),
       statusLabel(task.status),
       task.submission?.url || "—",
-      task.metrics.h24 ?? "—",
-      task.metrics.d7 ?? "—",
-      task.metrics.likes ?? "—",
-      task.metrics.replies ?? "—",
-      task.metrics.reposts ?? "—",
-      task.metrics.source,
+      displayMetric(task.metrics, "h24", t("unableVerify")),
+      displayMetric(task.metrics, "d7", t("unableVerify")),
+      displayMetric(task.metrics, "likes", t("unableVerify")),
+      displayMetric(task.metrics, "replies", t("unableVerify")),
+      displayMetric(task.metrics, "reposts", t("unableVerify")),
+      task.metrics.providerFailed ? t("unableVerify") : task.metrics.mode === "mock" ? t("mockSource") : task.metrics.mode === "live" ? t("liveSource") : t("waitingSource"),
     ].forEach((v) => {
       const td = document.createElement("td");
       td.textContent = v;

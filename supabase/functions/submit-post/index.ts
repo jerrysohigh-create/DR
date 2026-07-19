@@ -19,6 +19,12 @@ Deno.serve(async (req) => {
       submitted_url: parsed.url,
       x_username: parsed.username,
       post_id: parsed.postId,
+      verification_status: 'pending',
+      post_exists: null,
+      mention_verified: null,
+      utm_verified: null,
+      checked_at: null,
+      verification_source: null,
     }).select('submitted_at').single();
     if (error?.code === '23505') return json({ error: 'This task or post was already submitted', requestId }, 409);
     if (error) throw new AppError(502, 'database_write', 'Submission could not be saved');

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "flat Actor preserves absent bookmarks",
+    "adapter": "apify_flat_v1",
+    "payload": { "views": "125", "likes": 9, "replies": 2, "reposts": 3, "quotes": 1 },
+    "expected": { "views": 125, "likes": 9, "replies": 2, "reposts": 3, "quotes": 1, "bookmarks": null }
+  },
+  {
+    "name": "nested Actor maps provider-specific names",
+    "adapter": "apify_tweet_stats_v1",
+    "payload": { "tweet": { "stats": { "viewCount": 500, "favoriteCount": 20, "replyCount": 4, "retweetCount": 6, "bookmarkCount": 2 } } },
+    "expected": { "views": 500, "likes": 20, "replies": 4, "reposts": 6, "quotes": null, "bookmarks": 2 }
+  },
+  {
+    "name": "alternate provider invalid and missing values remain null",
+    "adapter": "twstalker_v1",
+    "payload": { "impressions": "unknown", "engagement": { "likes": 7, "replies": null } },
+    "expected": { "views": null, "likes": 7, "replies": null, "reposts": null, "quotes": null, "bookmarks": null }
+  }
+]

@@ -26,6 +26,7 @@ Object.assign(messages.en, {
   draft: "Draft", ready: "Ready to Publish", published: "Published", paused: "Paused", archived: "Archived", utmCampaign: "UTM campaign", utmContent: "UTM content",
   wave: "Wave", postUrl: "Post URL", views24: "24h Views", views7: "7d Views", likes: "Likes", replies: "Replies", reposts: "Reposts", source: "Source",
   totalKol: "Total KOL", readyStat: "Ready", overdue: "Overdue", complete24: "24h complete", complete7: "7d complete", totalViews: "Total Views", engagement: "Total engagement", clicks: "UTM clicks", manualReview: "Manual review",
+  mockSource: "Mock (excluded from official totals)", liveSource: "Live", waitingSource: "Waiting", unableVerify: "Unable to Verify",
   invalidCredentials: "Invalid demo credentials.", passwordSuccess: "Password set successfully. Sign in with your email and new password.", adminDenied: "Admin access denied", selectTask: "Select a task…", characters: "{count} characters", validUrl: "Enter a valid HTTP(S) URL.", validBase: "Enter a valid campaign base URL.", saved: "Saved.", requestFailed: "Request failed.", unsupported: "Unsupported file type.", imageLarge: "Image exceeds 5 MB.", videoLarge: "Video exceeds 18 MB.", signature: "File signature does not match its declared type.", selectFirst: "Select a task first.", maxAssets: "This task already has 10 active assets.", uploading: "Uploading…", uploadFailed: "Upload failed.", uploaded: "Asset uploaded.", active: "active", inactive: "inactive", replace: "Replace", deactivate: "Deactivate", delete: "Delete", deleteConfirm: "Permanently delete this asset?", errorPrefix: "Error: {detail}", unknownError: "Something went wrong. Please try again.",
 });
 Object.assign(messages.tc, {
@@ -34,6 +35,7 @@ Object.assign(messages.tc, {
   draft: "草稿", ready: "準備發布", published: "已發布", paused: "已暫停", archived: "已封存", utmCampaign: "UTM 活動", utmContent: "UTM 內容",
   wave: "波次", postUrl: "貼文網址", views24: "24 小時瀏覽", views7: "7 天瀏覽", likes: "喜歡", replies: "回覆", reposts: "轉發", source: "來源",
   totalKol: "KOL 總數", readyStat: "待發布", overdue: "已逾期", complete24: "24 小時完成率", complete7: "7 天完成率", totalViews: "總瀏覽量", engagement: "總互動", clicks: "UTM 點擊", manualReview: "人工審核",
+  mockSource: "Mock（不計入正式總數）", liveSource: "Live（正式）", waitingSource: "等待中", unableVerify: "無法驗證",
   invalidCredentials: "示範帳號或密碼無效。", passwordSuccess: "密碼設定成功，請使用電子郵件與新密碼登入。", adminDenied: "管理員存取遭拒", selectTask: "選擇任務…", characters: "{count} 個字元", validUrl: "請輸入有效的 HTTP(S) 網址。", validBase: "請輸入有效的活動基礎網址。", saved: "已儲存。", requestFailed: "要求失敗。", unsupported: "不支援此檔案類型。", imageLarge: "圖片超過 5 MB。", videoLarge: "影片超過 18 MB。", signature: "檔案特徵與宣告類型不符。", selectFirst: "請先選擇任務。", maxAssets: "此任務已有 10 個啟用素材。", uploading: "上傳中…", uploadFailed: "上傳失敗。", uploaded: "素材已上傳。", active: "啟用", inactive: "停用", replace: "替換", deactivate: "停用", delete: "刪除", deleteConfirm: "永久刪除此素材？", errorPrefix: "錯誤：{detail}", unknownError: "發生問題，請再試一次。",
 });
 export function detectLanguage(value = globalThis.navigator?.language) { return TC_REGIONS.test(value || "") ? "tc" : "en"; }

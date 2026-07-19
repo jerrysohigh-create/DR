@@ -2,15 +2,17 @@
 
 Static, mobile-first task portal intended for `https://jerrysohigh-create.github.io/DR/kol/`. It does not alter the DR homepage. Demo records and placeholder visuals are visibly marked **DEMO**.
 
-The base `/kol/` URL is a secure test-task entry page. A tester selects one of the three test KOL accounts and enters the private token supplied separately; the token is handed to the task through slug-scoped session storage and is never placed in the generated URL. No raw token is embedded in the page or repository. Existing complete `?task=<slug>&token=<token>` links remain compatible and remove their token from the address bar immediately.
+Give KOLs the base `https://jerrysohigh-create.github.io/DR/kol/` URL. They should select their assigned task and manually enter the private token supplied through a separate channel. The token is then handed to the selected task through slug-scoped session storage; no raw token is embedded in the page or repository.
+
+Legacy `?task=<slug>&token=<token>` links remain compatible, but are not recommended for delivery. Query parameters are included in the browser's initial HTTP request to GitHub Pages and may also be exposed to browser history, intermediary logs, copied links, or referrer handling before the application removes the token from the address bar. Do not claim that a query-string token avoids GitHub Pages requests.
 
 ## Local preview
 
 From the repository root run `python3 -m http.server 8000`, then open:
 
-`http://localhost:8000/kol/?task=crypto-panda&token=TEST_TOKEN`
+`http://localhost:8000/kol/`
 
-Other demo links use `crypto-dragon / TEST_DRAGON` and `kryptomonach / TEST_KRYPTO`. Demo admin is `/kol/admin.html`; password: `demo-admin`. This local password is not a production credential.
+Select a demo task and enter its local-only fixture token (`crypto-panda / TEST_TOKEN`, `crypto-dragon / TEST_DRAGON`, or `kryptomonach / TEST_KRYPTO`). Demo admin is `/kol/admin.html`; password: `demo-admin`. These fixture values are not production credentials.
 
 ## Production setup
 
@@ -31,7 +33,7 @@ Create an administrator through Supabase Auth, then insert the user UUID, email 
 
 All four Edge Functions are deployed to the temporary test project. Live checks passed for active/wrong/expired/revoked task access (200/403), invalid/mismatched/accepted/duplicate submission (400/403/201/409), and unauthenticated Admin export (401). Mock-only 24h and 7d collection returned HTTP 200 and preserved missing values as database `NULL` (`bookmarks` at 24h, `quotes` at 7d). Apify was not called. The test Admin invitation is waiting for email verification before authenticated Admin testing can finish.
 
-The token is removed from the address bar on load and held in session storage for refresh. Do not add analytics that capture the initial URL; if analytics are introduced, initialize them only after token removal and strip query parameters.
+For legacy query-string links, the token is removed from the address bar after the initial HTTP request and held in session storage for refresh. Do not add analytics that capture the initial URL; if analytics are introduced, initialize them only after token removal and strip query parameters.
 
 ## Localization
 
