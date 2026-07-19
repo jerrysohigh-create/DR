@@ -1,0 +1,7 @@
+import{createClient}from'https://esm.sh/@supabase/supabase-js@2';
+export const cors={'access-control-allow-origin':'*','access-control-allow-headers':'authorization, x-client-info, apikey, content-type'};
+export const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors,'content-type':'application/json'}});
+export const db=()=>createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}});
+export const sha256=async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))).map(x=>x.toString(16).padStart(2,'0')).join('');
+export async function access(slug:string,token:string){if(!slug||!token||token.length>256)return null;const client=db(),hash=await sha256(token);const{data}=await client.from('task_access_tokens').select('task_id,expires_at,revoked_at,campaign_tasks!inner(*,kol_profiles!inner(*),task_assets(*))').eq('token_hash',hash).eq('campaign_tasks.kol_profiles.slug',slug).maybeSingle();if(!data||data.revoked_at||new Date(data.expires_at)<=new Date())return null;return{client,data,task:data.campaign_tasks};}
+export function postUrl(v:string){try{const u=new URL(v);if(!['x.com','www.x.com','twitter.com','www.twitter.com'].includes(u.hostname.toLowerCase()))return null;const m=u.pathname.match(/^\/([^/]+)\/status\/(\d+)(?:\/|$)/i);return m?{url:`https://x.com/${m[1]}/status/${m[2]}`,username:m[1],postId:m[2]}:null}catch{return null}}

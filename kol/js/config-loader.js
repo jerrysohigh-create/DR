@@ -1,0 +1,2 @@
+// Deployments may provide ignored js/config.js. Demo safely falls back to the committed example.
+window.KOL_CONFIG_READY=new Promise(resolve=>{const s=document.createElement('script');s.src='js/config.js';s.onload=()=>resolve(window.KOL_CONFIG);s.onerror=()=>{const f=document.createElement('script');f.src='js/config.example.js';f.onload=()=>resolve(window.KOL_CONFIG);document.head.append(f)};document.head.append(s)});
