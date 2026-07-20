@@ -1,11 +1,45 @@
 import { parseXPostUrl, sameHandle } from "./validation.js";
 import { api, isDemo } from "./supabase-client.js";
 import { showLanding } from "./landing.js";
-import { getLanguage, t } from "./i18n.js";
+import { getLanguage, setupLanguageSwitcher, t } from "./i18n.js";
+import { safeImageAssets } from "./asset-url.js";
+setupLanguageSwitcher();
 const $ = (s) => document.querySelector(s);
 document.addEventListener("kol:language", () => location.reload());
 let task,
-  sessionToken = "";
+  sessionToken = "",
+  renderedDownloadableAssets = [];
+export function downloadableAssets(assets) {
+  return safeImageAssets(assets);
+}
+export function renderAssets(assets, container = $("#assets"), card = $("#assetsCard")) {
+  const safeAssets = downloadableAssets(assets);
+  renderedDownloadableAssets = safeAssets;
+  container.replaceChildren();
+  card.classList.toggle("hidden", !safeAssets.length);
+  safeAssets.forEach((a) => {
+    const row = document.createElement("div");
+    row.className = "asset";
+    const media = document.createElement("img");
+    media.src = a.url;
+    media.alt = a.name || "Campaign asset";
+    media.addEventListener("error", () => {
+      row.remove();
+      if (!container.children.length) card.classList.add("hidden");
+    }, { once: true });
+    const name = document.createElement("span");
+    name.textContent = a.name;
+    const dl = document.createElement("a");
+    dl.className = "button secondary";
+    dl.href = a.url;
+    dl.target = "_blank";
+    dl.rel = "noopener noreferrer";
+    dl.textContent = "Open / Download Asset";
+    row.append(media, name, dl);
+    container.append(row);
+  });
+  return safeAssets;
+}
 function fail(m) {
   ($("#state").innerHTML =
     `<strong>${t("unavailable")}</strong><p class="error"></p>`),
@@ -20,10 +54,10 @@ async function copy(v, msg) {
 ($("#copyPost").onclick = () => copy(task.copy, "#copyMsg")),
   ($("#copyLink").onclick = () => copy(task.utm, "#copyMsg")),
   ($("#downloadAll").onclick = () =>
-    task.assets.forEach((a, i) =>
+    renderedDownloadableAssets.forEach((a, i) =>
       setTimeout(() => {
         const x = document.createElement("a");
-        (x.href = a.url), (x.download = ""), x.click();
+        (x.href = a.url), (x.target = "_blank"), (x.rel = "noopener noreferrer"), x.click();
       }, 300 * i),
     )),
   ($("#calendar").onclick = () => {
@@ -135,27 +169,7 @@ async function copy(v, msg) {
             (li.textContent = x), $("#requirements").append(li);
           }),
           ($("#prohibited").textContent = task.prohibited || ""),
-          (function () {
-            if (!task.assets?.length)
-              return void $("#assetsCard").classList.add("hidden");
-            task.assets.forEach((a) => {
-              const row = document.createElement("div");
-              row.className = "asset";
-              const media = document.createElement(
-                "video" === a.type ? "video" : "img",
-              );
-              (media.src = a.url), "video" === a.type && (media.controls = !0);
-              const name = document.createElement("span");
-              name.textContent = a.name;
-              const dl = document.createElement("a");
-              (dl.className = "button secondary"),
-                (dl.href = a.url),
-                (dl.download = ""),
-                (dl.textContent = t("download")),
-                row.append(media, name, dl),
-                $("#assets").append(row);
-            });
-          })();
+          renderAssets(task.assets);
       })();
     } catch (e) {
       fail(safeError(e.message));

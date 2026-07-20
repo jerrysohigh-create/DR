@@ -1,5 +1,6 @@
 import { access, cors, json, safeError } from "../_shared/security.ts";
 import { canAccessTaskContent } from "../_shared/task-visibility.ts";
+import { compareTaskAssets, safePublicImageUrl } from "../_shared/public-asset-url.ts";
 
 Deno.serve(async (req) => {
   const requestId = crypto.randomUUID();
@@ -18,7 +19,7 @@ Deno.serve(async (req) => {
     if (!canAccessTaskContent(task.status))
       return json({ error: "Task is not published", requestId }, 403);
     const stored = (task.task_assets || []).filter(
-      (x: any) => x.active && x.storage_path,
+      (x: any) => x.active && x.asset_type === "image" && x.storage_path,
     );
     const signed = stored.length
       ? await result.client.storage.from("kol-assets").createSignedUrls(
@@ -43,12 +44,14 @@ Deno.serve(async (req) => {
       requirements: task.requirements,
       prohibited: (task.prohibited_claims || []).join(" · "),
       assets: (task.task_assets || [])
-        .filter((x: any) => x.active)
-        .sort((a: any, b: any) => a.sort_order - b.sort_order)
+        .filter((x: any) => x.active && x.asset_type === "image")
+        .sort(compareTaskAssets)
         .map((x: any) => ({
-          type: x.asset_type,
+          type: "image",
           name: x.file_name,
-          url: x.storage_path ? signedByPath.get(x.storage_path) : x.public_url,
+          url: x.storage_path
+            ? safePublicImageUrl(signedByPath.get(x.storage_path))
+            : safePublicImageUrl(x.public_url),
         }))
         .filter((x: any) => x.url),
     });

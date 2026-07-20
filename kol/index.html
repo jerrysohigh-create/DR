@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="noindex,nofollow" />
+    <!-- frame-ancestors in a meta CSP is not enforced; production must send it as an HTTP response header. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; img-src 'self' data: https://www.magne.ai https://magne.ai https://jerrysohigh-create.github.io https://olgvhiwkcjkbqwawgiaq.supabase.co; media-src 'self' https://www.magne.ai https://magne.ai; connect-src 'self' https://olgvhiwkcjkbqwawgiaq.supabase.co; script-src 'self'; style-src 'self'; frame-src 'none'; form-action 'self'; upgrade-insecure-requests" />
     <title>MAGNE.AI Campaign Task</title>
     <link rel="stylesheet" href="css/app.css" />
   </head>
@@ -151,7 +153,6 @@
       </div>
       <footer>magne.ai · <a href="privacy.html" data-i18n="privacy">Privacy</a></footer>
     </main>
-    <script type="module">import { setupLanguageSwitcher } from "./js/i18n.js"; setupLanguageSwitcher();</script>
     <script src="js/config-loader.js"></script>
     <script type="module" src="js/task.js"></script>
   </body>
