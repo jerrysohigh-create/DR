@@ -1,0 +1,29 @@
+-- REVIEW ONLY. Do not execute as part of WEB-20260720-KOL-ASSET-SAFE-IMAGE-V1.
+-- Stop on duplicates before any DDL; do not automatically delete or merge records.
+do $$
+begin
+  if exists (
+    select 1 from public.task_assets
+    where storage_path is null and public_url <> ''
+    group by task_id, asset_type, public_url having count(*) > 1
+  ) then
+    raise exception 'task_assets duplicates exist; review required before migration';
+  end if;
+end $$;
+
+alter table public.task_assets
+  add column if not exists created_at timestamptz not null default now();
+
+create unique index task_assets_task_type_public_url_uidx
+  on public.task_assets(task_id, asset_type, public_url)
+  where storage_path is null and public_url <> '';
+
+create index task_assets_stable_sort_idx
+  on public.task_assets(task_id, sort_order, created_at, id);
+
+-- Proposed rerunnable import form:
+-- insert into public.task_assets(task_id,asset_type,file_name,public_url,sort_order,active)
+-- values (...)
+-- on conflict(task_id,asset_type,public_url)
+--   where storage_path is null and public_url <> '' do update
+-- set file_name=excluded.file_name,sort_order=excluded.sort_order,active=excluded.active;
